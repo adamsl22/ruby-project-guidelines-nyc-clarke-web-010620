@@ -52,6 +52,13 @@ class Raid < ActiveRecord::Base
         new_pop = self.village.population - victims
         self.village.update(population: new_pop)
         puts "Your dragons consumed #{victims} people."
+        if self.village.population < 1
+            puts "#{self.village.name} was destroyed!"
+            self.village.destroy
+        elsif self.village.knights == 0
+            self.village.update(knights: 1)
+            puts "A knight has appeared in #{self.village.name} to defend the people from further attacks."
+        end
     end
 
     def dragons_killed
@@ -60,8 +67,8 @@ class Raid < ActiveRecord::Base
         dragons_killed = deaths.round
         dragons_killed.times do
             kill = self.dragons.sample
-            kill.destroy
             puts "#{kill.name} died during the raid!"
+            kill.destroy
         end
     end
 
