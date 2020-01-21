@@ -1,6 +1,6 @@
 class Raid < ActiveRecord::Base
-    has_many :raid_pairings
-    has_many :dragons, through: raid_pairings
+    has_many :raidpairings
+    has_many :dragons, through: :raidpairings
     belongs_to :village
 
     def hunger
@@ -8,13 +8,13 @@ class Raid < ActiveRecord::Base
     end
 
     def danger_value
-        outnumbered_ratio = self.village.knights / self.raid_pairings.count
+        outnumbered_ratio = self.village.knights / self.raidpairings.count
         danger = self.outnumbered_ratio + 3 * self.village.slayers
         danger_value = danger / self.dice_roll
     end
 
     def knights_killed
-        massacre = self.village.knights * .15 * self.danger_value
+        massacre = self.village.knights * 0.15 * self.danger_value
         knights_killed = self.village.knights - massacre.round
         self.village.update(knights -= knights_killed)
         puts "Your dragons killed #{knights_killed} knights in the raid!"
@@ -22,7 +22,7 @@ class Raid < ActiveRecord::Base
 
     def slayers_killed
         if self.village.slayers > 0
-            massacre = self.village.slayers * .4 * self.danger_value
+            massacre = self.village.slayers * 0.4 * self.danger_value
             slayers_killed = self.village.slayer - massacre.round
             self.village.update(slayers -= slayers_killed)
             puts "Your dragons killed #{slayers_killed} slayers in the raid!"
@@ -47,8 +47,8 @@ class Raid < ActiveRecord::Base
     end
 
     def dragons_killed
-        death_chance = (self.danger_value - 5) * .2
-        deaths = self.raid_pairings.count * death_chance
+        death_chance = (self.danger_value - 5) * 0.2
+        deaths = self.raidpairings.count * death_chance
         dragons_killed = deaths.round
         dragons_killed.times do
             kill = self.dragon.sample
@@ -58,8 +58,8 @@ class Raid < ActiveRecord::Base
     end
 
     def dragons_injured
-        injure_chance = (self.danger_value - 3.5) * .65
-        injuries = self.raid_pairings.count * injure_chance
+        injure_chance = (self.danger_value - 3.5) * 0.65
+        injuries = self.raidpairings.count * injure_chance
         dragons_injured = injuries.round
         dragons_injured.times do
             injure = self.dragon.find_by(health: "Healthy")

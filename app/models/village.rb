@@ -9,11 +9,11 @@ class Village < ActiveRecord::Base
         new_pop = 0
         Village.all.each do |village|
             if turn < 50
-                new_pop = village.population + .03 * village.population
+                new_pop = village.population + 0.03 * village.population
             elsif turn > 49 && turn < 100
-                new_pop = village.population + .06 * village.population
+                new_pop = village.population + 0.06 * village.population
             else
-                new_pop = village.population + .09 * village.population
+                new_pop = village.population + 0.09 * village.population
             end
             village.update(population: new_pop.round)
         end

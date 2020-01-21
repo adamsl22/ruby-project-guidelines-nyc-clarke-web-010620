@@ -1,5 +1,5 @@
 require_relative '../config/environment'
-
+require 'pry'
 
 
 
@@ -128,7 +128,7 @@ while i < 30
     ## START TURN
     main_menu_ui.prompt
 
-
+    binding.pry
     ###calculate game
 
     ##RECAP TURN
@@ -158,7 +158,7 @@ def create_dragon
     dragon_pattern = UI.simple_question("What pattern is your dragon?")
 
 
-    ## Dragon.create(name: dragon_name, wingspan: dragon_wingspan, color: dragon_color, pattern: dragon_pattern)
+    Dragon.create(name: dragon_name, wing_span: dragon_wingspan, color: dragon_color, pattern: dragon_pattern, hunger: 0, health: "Healthy")
     ## create instance of boris here
     ## create game event here #will need a week 
     puts "#{dragon_name} has been created!"
