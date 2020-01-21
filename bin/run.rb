@@ -49,7 +49,7 @@ view_humans_ui.parent_menu = main_menu_ui
 
 #4
 create_raid_ui = UI.new("create_raid_ui")
-create_raid_ui.menu_items = ["[1] - Test Dragon 1.", "[2] - Test Dragon 2.","[3] - Test Dragon 3.","[4] - Test Dragon 4.","[5] - Test Dragon 5.","[6] - Test Dragon 6.",]
+create_raid_ui.menu_items = ["", ""]
 create_raid_ui.header = "                          CREATE RAID"
 create_raid_ui.body = "\n   You have not created any dragons.\n".blue
 create_raid_ui.has_border =  true
@@ -104,12 +104,17 @@ create_raid_ui.set_logic(test, test2, test3, test4, test5, test6, test7, test8, 
 
 
 ##SETUP GAME EVENTS HERE
+# GameEvent.new(nil, 3, ) #will need to run the method "Village.first_village"
 GameEvent.new(nil, 30, "THE VILLAGES ARE GETTING STRONGER... better watch yourself.")
 GameEvent.new(nil, 40, "Testing")
 
 
+
+
+
 ## begin game  
 system("clear")
+Village.nomads
 
 UI.billboard("WELCOME TO DRAGON MAKER!")
 UI.ask_for_enter
@@ -117,6 +122,15 @@ UI.ask_for_enter
 ## MAIN GAME LOOP
 i = 0
 while i < 30
+
+    # Village.population_growth(turn)
+    # Village.new_village(turn)
+    # Village.knights(turn)
+    # Village.slayers(turn)
+    # # Dragon.add_hunger
+    # Dragon.recovery
+
+
     ## REGENERATE MENUS
     turn = GameEvent.gameclock
     main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"  
@@ -176,6 +190,11 @@ def create_dragon
     ## create instance of boris here
     ## create game event here #will need a week 
     puts "#{dragon_name} has been created!"
+end
+
+def create_raid(dragon_selections)
+    ##dragon_selections is an array of dragon objects
+    ##create a raid object
 end
 
 begin_game
