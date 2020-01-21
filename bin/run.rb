@@ -41,7 +41,7 @@ view_humans_ui.parent_menu = main_menu_ui
 
 #4
 create_raid_ui = UI.new("create_raid_ui")
-create_raid_ui.menu_items = ["[1] Test Dragon 1.", "[2] Test Dragon 2.","[3] Test Dragon 3.","[4] Test Dragon 4.","[5] Test Dragon 5.","[6] Test Dragon 6.",]
+create_raid_ui.menu_items = ["[1] - Test Dragon 1.", "[2] - Test Dragon 2.","[3] - Test Dragon 3.","[4] - Test Dragon 4.","[5] - Test Dragon 5.","[6] - Test Dragon 6.",]
 create_raid_ui.header = "                          CREATE RAID"
 create_raid_ui.body = "\n   You have not created any dragons.\n".blue
 create_raid_ui.has_border =  true
@@ -56,10 +56,13 @@ create_raid_ui.question_prompt = "Choose dragons for your raid. "
 
 
 ## put this into UI
-def make_choice(num_input, menu_object)
+chosen = []
+def make_choice(num_input, menu_object, chosen)
     #-1 from num input to get the element of the array
     menu_object.menu_items[num_input - 1] = menu_object.menu_items[num_input - 1].green
     ## also need to add this choice to the chosen dragons...
+    chosen << menu_object.menu_items[num_input - 1 ].split(" - ")[1]
+    chosen.each {|c| puts c + " was added."}
     menu_object.prompt
 end
 
@@ -76,7 +79,7 @@ def update_menu_items(new_menu_items_array, menu_object)
     # this will take in all the dragons after they are added to 
     # an array and make them menu items.
     new_menu_items_array.each_with_index do |item, i|
-        menu_object.menu_items[i] = "[#{i + 1}] #{item}"
+        menu_object.menu_items[i] = "[#{i + 1}] - #{item}"
     end
 end
 # call this as update_menu_items(dragons, create_raid_ui)
@@ -85,15 +88,15 @@ end
 ##CREATE LOGIC HERE
 main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt))
 
-test = lambda {make_choice(1, create_raid_ui)}
-test2 = lambda {make_choice(2, create_raid_ui)}
-test3 = lambda {make_choice(3, create_raid_ui)}
-test4 = lambda {make_choice(4, create_raid_ui)}
-test5 = lambda {make_choice(5, create_raid_ui)}
-test6 = lambda {make_choice(6, create_raid_ui)}
-test7 = lambda {make_choice(7, create_raid_ui)}
-test8 = lambda {make_choice(8, create_raid_ui)}
-test9 = lambda {make_choice(9, create_raid_ui)}
+test = lambda {make_choice(1, create_raid_ui,chosen)}
+test2 = lambda {make_choice(2, create_raid_ui,chosen)}
+test3 = lambda {make_choice(3, create_raid_ui,chosen)}
+test4 = lambda {make_choice(4, create_raid_ui,chosen)}
+test5 = lambda {make_choice(5, create_raid_ui,chosen)}
+test6 = lambda {make_choice(6, create_raid_ui,chosen)}
+test7 = lambda {make_choice(7, create_raid_ui,chosen)}
+test8 = lambda {make_choice(8, create_raid_ui,chosen)}
+test9 = lambda {make_choice(9, create_raid_ui,chosen)}
 create_raid_ui.set_logic(test, test2, test3, test4, test5, test6, test7, test8, test9)  
 
 ## make choice, once you make that choice that choice either turns green or turns black again.. also adds it to your chosen
@@ -102,8 +105,8 @@ create_raid_ui.set_logic(test, test2, test3, test4, test5, test6, test7, test8, 
 
 
 ##SETUP GAME EVENTS HERE
+GameEvent.new(nil, 30, "THE VILLAGES ARE GETTING STRONGER... better watch yourself.")
 GameEvent.new(nil, 40, "Testing")
-GameEvent.new(nil, 50, "Testing")
 
 
 ## begin game  
