@@ -9,14 +9,15 @@ class Raid < ActiveRecord::Base
 
     def danger_value
         outnumbered_ratio = self.village.knights / self.raid_pairings.count
-        danger = self.outnumbered_ratio + 3 * self.village.slayers
+        danger = outnumbered_ratio + 3 * self.village.slayers
         danger_value = danger / self.dice_roll
     end
 
     def knights_killed
         massacre = self.village.knights * 0.15 * self.danger_value
         knights_killed = self.village.knights - massacre.round
-        self.village.update(knights -= knights_killed)
+        new_knights = self.village.knights - knights_killed
+        self.village.update(knights: new_knights)
         puts "Your dragons killed #{knights_killed} knights in the raid!"
     end
 
@@ -24,12 +25,14 @@ class Raid < ActiveRecord::Base
         if self.village.slayers > 0
             massacre = self.village.slayers * 0.4 * self.danger_value
             slayers_killed = self.village.slayer - massacre.round
-            self.village.update(slayers -= slayers_killed)
+            new_slayers = self.village.slayers - slayers_killed
+            self.village.update(slayers: new_slayers)
             puts "Your dragons killed #{slayers_killed} slayers in the raid!"
         end
     end
 
     def victims
+        victims = 0
         if self.danger_value > 1
             massacre = self.hunger / self.danger_value
             victims = massacre.round
@@ -42,7 +45,8 @@ class Raid < ActiveRecord::Base
             victims = self.hunger
             self.dragons.update(hunger: 0)
         end
-        self.village.update(population -= victims)
+        new_pop = self.village.population - victims
+        self.village.update(population: new_pop)
         puts "Your dragons consumed #{victims} people."
     end
 

@@ -4,7 +4,8 @@ class Dragon < ActiveRecord::Base
 
     def self.hunger
         Dragon.all.each do |dragon|
-            dragon.update(hunger += 1)
+            new_hunger = dragon.hunger + 1
+            dragon.update(hunger: new_hunger)
             if dragon.hunger == 18
                 puts "#{dragon.name} is getting restless."
             elsif dragon.hunger == 19
