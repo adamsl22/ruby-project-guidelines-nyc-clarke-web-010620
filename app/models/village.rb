@@ -21,7 +21,8 @@ class Village < ActiveRecord::Base
 
     def self.first_village
         if turn == 3
-            nomads.update(population -= 15)
+            nomad_pop = nomads.population - 15
+            nomads.update(population: nomad_pop)
             first_village = Village.create(name: "Primeton", population: 15, knights: 0, slayers: 0)
             puts "The people have founded the village of Primeton."
         end
@@ -45,7 +46,8 @@ class Village < ActiveRecord::Base
             settlers.times do
                 settler_home = Village.all.sample
                 if settler_home.population > 1
-                    settler_home.population -= 1
+                    new_pop = settler_home.population - 1
+                    settler_home.update(population: new_pop)
                 end
             end
             name = Village.create(name: name.capitalize, population: settlers, knights: 0, slayers: 0)
@@ -57,14 +59,15 @@ class Village < ActiveRecord::Base
         knights_dice = [1,2,3,4,5]
         Village.all.each do |village|
             if village.knights > 0
+                new_knights = village.knights + 1
                 if turn < 50 && knights_dice.sample == 5
-                    village.update(knights += 1)
+                    village.update(knights: new_knights)
                 elsif turn > 49 && turn < 100
                     if knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                        village.update(knights += 1)
+                        village.update(knights: new_knights)
                     end
                 else
-                    village.update(knights += 1)
+                    village.update(knights: new_knights)
                 end
             end
         end
@@ -73,12 +76,18 @@ class Village < ActiveRecord::Base
     def self.slayers
         slayers_dice = [1,2,3,4,5]
         if turn == 30 || turn == 40
-            Village.all.sample.update(slayers += 1)
+            slayer_home = Village.all.sample
+            new_slayers = slayer_home.slayers + 1
+            slayer_home.update(slayers: new_slayers)
         elsif turn > 49 && turn < 100 && slayers_dice.sample == 5
-            Village.all.sample.update(slayers += 1)
+            slayer_home = Village.all.sample
+            new_slayers = slayer_home.slayers + 1
+            slayer_home.update(slayers: new_slayers)
         elsif turn > 99
             if slayers_dice.sample == 4 || slayers_dice.sample == 5
-                Village.all.sample.update(slayers += 1)
+                slayer_home = Village.all.sample
+                new_slayers = slayer_home.slayers + 1
+                slayer_home.update(slayers: new_slayers)
             end
         end
     end
