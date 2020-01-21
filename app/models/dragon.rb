@@ -27,4 +27,16 @@ class Dragon < ActiveRecord::Base
             end
         end
     end
+
+    def self.list_dragons
+    final_output = ""
+        if Dragon.all.count == 0
+            final_output = "\n                You do not have any dragons. \n      ".blue
+        else
+            Dragon.all.each do |dragon|
+                final_output = final_output + "___________________________________________________________\n   Name: #{dragon.name}    |   Hunger: #{dragon.hunger}  |   Health: #{dragon.health} \n ___________________________________________________________ \n  "
+            end
+        end
+    final_output
+    end
 end

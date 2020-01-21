@@ -6,6 +6,14 @@ require 'pry'
 
 def begin_game
 ##Setup Turn Clock
+
+#clear database
+Dragon.delete_all
+RaidPairing.delete_all
+Raid.delete_all
+Village.delete_all
+
+
 turn = GameEvent.gameclock
 
 ## BUILD MENUS HERE
@@ -72,17 +80,8 @@ def clear_choices(menu_object)
     end
 end
 
-binding.pry
 
 
-def update_menu_items(new_menu_items_array, menu_object)
-    # this will take in all the dragons after they are added to 
-    # an array and make them menu items.
-    new_menu_items_array.each_with_index do |item, i|
-        menu_object.menu_items[i] = "[#{i + 1}] - #{item}"
-    end
-end
-# call this as update_menu_items(dragons, create_raid_ui)
 
 
 ##CREATE LOGIC HERE
@@ -122,6 +121,21 @@ while i < 30
     turn = GameEvent.gameclock
     main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"  
     main_menu_ui.body = "           Number of Dragons:".blue
+    view_dragons_ui.body = Dragon.list_dragons
+
+    ##THIS WILL EVENTUALLY BE A CLASS METHOD
+            new_menu_items_array = Dragon.all.map do |dragon|
+                "#{dragon.name}"
+            end
+            def update_menu_items(new_menu_items_array, menu_object)
+                # this will take in all the dragons after they are added to 
+                # an array and make them menu items.
+                new_menu_items_array.each_with_index do |item, i|
+                    menu_object.menu_items[i] = "[#{i + 1}] - #{item}"
+                end
+            end
+            # call this as update_menu_items(dragons, create_raid_ui)
+            update_menu_items(new_menu_items_array,create_raid_ui)
     ###############
 
 

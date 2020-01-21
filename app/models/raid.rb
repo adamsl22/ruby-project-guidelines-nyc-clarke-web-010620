@@ -1,6 +1,6 @@
 class Raid < ActiveRecord::Base
-    has_many :raidpairings
-    has_many :dragons, through: :raidpairings
+    has_many :raid_pairings
+    has_many :dragons, through: :raid_pairings
     belongs_to :village
 
     def hunger
@@ -8,7 +8,7 @@ class Raid < ActiveRecord::Base
     end
 
     def danger_value
-        outnumbered_ratio = self.village.knights / self.raidpairings.count
+        outnumbered_ratio = self.village.knights / self.raid_pairings.count
         danger = self.outnumbered_ratio + 3 * self.village.slayers
         danger_value = danger / self.dice_roll
     end
@@ -48,7 +48,7 @@ class Raid < ActiveRecord::Base
 
     def dragons_killed
         death_chance = (self.danger_value - 5) * 0.2
-        deaths = self.raidpairings.count * death_chance
+        deaths = self.raid_pairings.count * death_chance
         dragons_killed = deaths.round
         dragons_killed.times do
             kill = self.dragon.sample
@@ -59,7 +59,7 @@ class Raid < ActiveRecord::Base
 
     def dragons_injured
         injure_chance = (self.danger_value - 3.5) * 0.65
-        injuries = self.raidpairings.count * injure_chance
+        injuries = self.raid_pairings.count * injure_chance
         dragons_injured = injuries.round
         dragons_injured.times do
             injure = self.dragon.find_by(health: "Healthy")
