@@ -48,8 +48,8 @@ class Village < ActiveRecord::Base
                     settler_home.update(population: new_pop)
                 end
             end
-            name = Village.create(name: name.capitalize, population: settlers, knights: 0, slayers: 0)
-            puts "The people have founded the village of #{name.capitalize}."
+            new_village = Village.create(name: name.capitalize, population: settlers, knights: 0, slayers: 0)
+            puts "The people have founded the village of #{new_village.name}."
         end
     end
 
@@ -88,5 +88,17 @@ class Village < ActiveRecord::Base
                 slayer_home.update(slayers: new_slayers)
             end
         end
+    end
+
+    def self.list_villages
+    final_output = ""
+        if self.all.count == 0
+            final_output = "\n                You do not have any villages. \n      ".blue
+        else
+            self.all.each do |village|
+                final_output = final_output + "___________________________________________________________\n   Name: #{village.name}    |   Population: #{village.population}  |   Knights: #{village.knights} | Slayers: #{village.slayers} \n ___________________________________________________________ \n  "
+            end
+        end
+    final_output
     end
 end

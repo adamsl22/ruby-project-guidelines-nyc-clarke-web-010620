@@ -40,7 +40,7 @@ view_dragons_ui.parent_menu = main_menu_ui
 #3
 view_humans_ui = UI.new("view_humans_ui")
 view_humans_ui.menu_items = ["[back] to go back", ""]
-view_humans_ui.header = "                          HUMANS".blue
+view_humans_ui.header = "                          VILLAGES".blue
 view_humans_ui.body = "\n   No humans exist...\n".blue
 view_humans_ui.has_border =  true
 view_humans_ui.border_type = "squiggles-md"
@@ -122,13 +122,13 @@ UI.ask_for_enter
 ## MAIN GAME LOOP
 i = 0
 while i < 30
-
-    # Village.population_growth(turn)
-    # Village.new_village(turn)
-    # Village.knights(turn)
-    # Village.slayers(turn)
-    # # Dragon.add_hunger
-    # Dragon.recovery
+    turn = 30
+    Village.population_growth(turn)
+    Village.new_village(turn)
+    Village.knights(turn)
+    Village.slayers(turn)
+    # Dragon.add_hunger
+    Dragon.recovery
 
 
     ## REGENERATE MENUS
@@ -136,6 +136,8 @@ while i < 30
     main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"  
     main_menu_ui.body = "           Number of Dragons:".blue
     view_dragons_ui.body = Dragon.list_dragons
+    view_humans_ui.body = Village.list_villages
+
 
     ##THIS WILL EVENTUALLY BE A CLASS METHOD
             new_menu_items_array = Dragon.all.map do |dragon|
