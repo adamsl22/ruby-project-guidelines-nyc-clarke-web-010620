@@ -121,13 +121,12 @@ UI.ask_for_enter
 
 ## MAIN GAME LOOP
 i = 0
-while i < 30
-    turn = 30
+while i < 200
     Village.population_growth(turn)
     Village.new_village(turn)
     Village.knights(turn)
     Village.slayers(turn)
-    # Dragon.add_hunger
+    Dragon.add_hunger
     Dragon.recovery
 
 

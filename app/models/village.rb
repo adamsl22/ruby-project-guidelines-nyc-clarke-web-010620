@@ -77,15 +77,18 @@ class Village < ActiveRecord::Base
             slayer_home = Village.all.sample
             new_slayers = slayer_home.slayers + 1
             slayer_home.update(slayers: new_slayers)
+            puts "The people are learning how to better kill dragons. A slayer has emerged who poses a grave threat!"
         elsif turn > 49 && turn < 100 && slayers_dice.sample == 5
             slayer_home = Village.all.sample
             new_slayers = slayer_home.slayers + 1
             slayer_home.update(slayers: new_slayers)
+            puts "Another slayer has emerged among the people."
         elsif turn > 99
             if slayers_dice.sample == 4 || slayers_dice.sample == 5
                 slayer_home = Village.all.sample
                 new_slayers = slayer_home.slayers + 1
                 slayer_home.update(slayers: new_slayers)
+                puts "Another slayer has emerged among the people."
             end
         end
     end
