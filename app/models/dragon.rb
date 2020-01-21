@@ -2,7 +2,7 @@ class Dragon < ActiveRecord::Base
     has_many :raid_pairings
     has_many :raids, through: :raid_pairings
 
-    def self.hunger
+    def self.add_hunger
         Dragon.all.each do |dragon|
             new_hunger = dragon.hunger + 1
             dragon.update(hunger: new_hunger)
