@@ -1,4 +1,6 @@
 require_relative '../config/environment.rb'
+require_relative './help.rb'
+include HelpMenu
 
 class UI
 
