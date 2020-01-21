@@ -14,19 +14,23 @@ class Raid < ActiveRecord::Base
     end
 
     def knights_killed
-        massacre = self.village.knights * 0.15 * self.danger_value
-        knights_killed = self.village.knights - massacre.round
-        new_knights = self.village.knights - knights_killed
-        self.village.update(knights: new_knights)
+        new_knights = self.village.knights * 0.15 * self.danger_value
+        if new_knights.round > self.village.knights
+            new_knights = self.village.knights
+        end
+        knights_killed = self.village.knights - new_knights.round
+        self.village.update(knights: new_knights.round)
         puts "Your dragons killed #{knights_killed} knights in the raid!"
     end
 
     def slayers_killed
         if self.village.slayers > 0
-            massacre = self.village.slayers * 0.4 * self.danger_value
-            slayers_killed = self.village.slayer - massacre.round
-            new_slayers = self.village.slayers - slayers_killed
-            self.village.update(slayers: new_slayers)
+            new_slayers = self.village.slayers * 0.4 * self.danger_value
+            if new_slayers.round > self.village.slayers
+                new_slayers = self.village.slayers
+            end
+            slayers_killed = self.village.slayers - new_slayers.round
+            self.village.update(slayers: new_slayers.round)
             puts "Your dragons killed #{slayers_killed} slayers in the raid!"
         end
     end
@@ -55,7 +59,7 @@ class Raid < ActiveRecord::Base
         deaths = self.raid_pairings.count * death_chance
         dragons_killed = deaths.round
         dragons_killed.times do
-            kill = self.dragon.sample
+            kill = self.dragons.sample
             kill.destroy
             puts "#{kill.name} died during the raid!"
         end
@@ -66,7 +70,7 @@ class Raid < ActiveRecord::Base
         injuries = self.raid_pairings.count * injure_chance
         dragons_injured = injuries.round
         dragons_injured.times do
-            injure = self.dragon.find_by(health: "Healthy")
+            injure = self.dragons.find_by(health: "Healthy")
             injure.update(health: "Hurt")
             puts "#{injure.name} was injured in the raid!"
         end

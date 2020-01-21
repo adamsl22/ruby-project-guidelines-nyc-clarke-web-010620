@@ -5,7 +5,7 @@ class Village < ActiveRecord::Base
         nomads = Village.create(name: "Nomads", population: 30, knights: 0, slayers: 0)
     end
 
-    def self.population_growth
+    def self.population_growth(turn)
         new_pop = 0
         Village.all.each do |village|
             if turn < 50
@@ -20,12 +20,10 @@ class Village < ActiveRecord::Base
     end
 
     def self.first_village
-        if turn == 3
-            nomad_pop = nomads.population - 15
-            nomads.update(population: nomad_pop)
-            first_village = Village.create(name: "Primeton", population: 15, knights: 0, slayers: 0)
-            puts "The people have founded the village of Primeton."
-        end
+        nomad_pop = nomads.population - 15
+        nomads.update(population: nomad_pop)
+        first_village = Village.create(name: "Primeton", population: 15, knights: 0, slayers: 0)
+        puts "The people have founded the village of Primeton."
     end
 
     def self.most_populous_village
@@ -34,7 +32,7 @@ class Village < ActiveRecord::Base
         end
     end
 
-    def self.new_village
+    def self.new_village(turn)
         village_dice = [1,2,3]
         population_dice = [15,16,17,18,19,20]
         settlers = population_dice.sample
@@ -55,7 +53,7 @@ class Village < ActiveRecord::Base
         end
     end
 
-    def self.knights
+    def self.knights(turn)
         knights_dice = [1,2,3,4,5]
         Village.all.each do |village|
             if village.knights > 0
@@ -73,7 +71,7 @@ class Village < ActiveRecord::Base
         end
     end
 
-    def self.slayers
+    def self.slayers(turn)
         slayers_dice = [1,2,3,4,5]
         if turn == 30 || turn == 40
             slayer_home = Village.all.sample
