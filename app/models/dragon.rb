@@ -66,4 +66,13 @@ class Dragon < ActiveRecord::Base
             return healthy_dragons
         end
     end
+
+    def self.kill_dragon(dragon)
+        dragon.destroy
+    end
+
+    def self.injure_dragon(dragon)
+        dragon.update(health: "Hurt")
+    end
+
 end
