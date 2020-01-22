@@ -106,7 +106,7 @@ UI.ask_for_enter
 
 ## MAIN GAME LOOP
 i = 0
-while i < 200
+while i < 999
     Village.population_growth(turn)
     Village.new_village(turn)
     Village.knights(turn)

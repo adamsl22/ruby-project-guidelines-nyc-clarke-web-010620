@@ -58,9 +58,14 @@ class SelectionMenu < UI
             end
 
             #Choose your village
-
-            #Raid(#village_id, #diceRoll)
-            #RaidPairing(#raid_id, #dragon_id)
+            dice = [1,2,3,4,5,6]
+            new_raid = Raid.create(village_id: selected_village.id, dice_roll = dice.sample)
+            selected.each do |dragon|
+                new_pairing = RaidPairing.create(raid_id: new_raid.id, dragon_id: dragon.id)
+            end
+            puts "Your raid has begun!"
+            puts "Dice roll: #{new_raid.dice_roll}"
+            new_raid.result
             
         elsif input == "clear"
             clear_choices
