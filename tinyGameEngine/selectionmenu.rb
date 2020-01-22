@@ -46,10 +46,6 @@ class SelectionMenu < UI
             get_input(input)
         elsif input == "done"
 
-            ##This is where I need to return the array...
-            ##If Dragon.health > 0
-            ##Initialize 
-            
             @chosen.each {|chose| puts "your chosen items #{chose}"}
             @selected = []
             Dragon.all.each do |dragon|
@@ -104,6 +100,7 @@ def make_choice(num_input)
     self.prompt
 end
 
+
 def make_one_choice(num_input)
     village_string = self.menu_items[num_input - 1 ].split(" - ")[1]
     
@@ -112,16 +109,24 @@ def make_one_choice(num_input)
      end
 end
 
+
 def update_menu_items(new_items_array)
+    binding.pry
     if new_items_array == nil
         @body = "You have no dragons available to raid." 
     else
         @body = "\nSelect your Dragons and then type 'done' to create your raid.\n "
-        new_items_array.each_with_index do |new_item, index|
-            menu_items[index] = "[#{index + 1}] - #{new_item.name}"
+        @question_prompt = "Choose your Dragons."
+        @menu_items.each_with_index do |item, index|
+            menu_items[index] = ""
         end
+        new_items_array.each_with_index do |new_item, index|
+            @menu_items[index] = "[#{index + 1}] - #{new_item.name}"
+        end
+        binding.pry
     end
 end
+
 
 def update_menu_items_village(new_items_array)
     ##regenerate same menu with the village items...
@@ -140,9 +145,11 @@ def update_menu_items_village(new_items_array)
 end
 
 
-
+def clear_menu_items
+        @menu_items.each_with_index do |item, index|
+            menu_items[index] = ""
+        end
 end
-
 
 def clear_choices
     self.menu_items = self.menu_items.map do |item|
@@ -203,6 +210,6 @@ def village_prompt
             puts "Dice roll: #{new_raid.dice_roll}"
             new_raid.result
 
-
+        end
 
 end
