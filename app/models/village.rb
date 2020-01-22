@@ -8,7 +8,7 @@ class Village < ActiveRecord::Base
     def self.population_growth(turn)
         new_pop = 0
         Village.all.each do |village|
-            if village.name == "Nomads"
+            if village.name == "Nomads" && village.population > 17
                 if turn < 50
                     new_pop = village.population + 0.03 * village.population
                 elsif turn > 49 && turn < 100
@@ -35,7 +35,6 @@ class Village < ActiveRecord::Base
 
     def self.first_village
         nomads = Village.find_by(name: "Nomads")
-        binding.pry
         nomad_pop = nomads.population - 15
         nomads.update(population: nomad_pop)
         first_village = Village.create(name: "Primeton", population: 15, knights: 0, slayers: 0)
