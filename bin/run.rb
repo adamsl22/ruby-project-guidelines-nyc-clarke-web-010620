@@ -48,7 +48,7 @@ view_humans_ui.has_divider = true
 view_humans_ui.parent_menu = main_menu_ui
 
 #4
-create_raid_ui = UI.new("create_raid_ui")
+create_raid_ui = SelectionMenu.new("create_raid_ui")
 create_raid_ui.menu_items = ["", ""]
 create_raid_ui.header = "                          CREATE RAID"
 create_raid_ui.body = "\n   You have not created any dragons.\n".blue
@@ -64,21 +64,6 @@ create_raid_ui.question_prompt = "Choose dragons for your raid. "
 
 
 ## put this into UI
-chosen = []
-def make_choice(num_input, menu_object, chosen)
-    #-1 from num input to get the element of the array
-    menu_object.menu_items[num_input - 1] = menu_object.menu_items[num_input - 1].green
-    ## also need to add this choice to the chosen dragons...
-    chosen << menu_object.menu_items[num_input - 1 ].split(" - ")[1]
-    chosen.each {|c| puts c + " was added."}
-    menu_object.prompt
-end
-
-def clear_choices(menu_object)
-    menu_object.menu_items.each do |item|
-        item = item.black
-    end
-end
 
 
 
