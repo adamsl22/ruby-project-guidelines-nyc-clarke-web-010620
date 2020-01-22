@@ -45,10 +45,14 @@ class SelectionMenu < UI
             ##If Dragon.health > 0
             ##Initialize 
             ##
-            chosen.each {|chose| puts chose}
-            selected = Dragon.all.select do |dragon|
+            @chosen.each {|chose| puts "your chosen items #{chose}"}
+            selected = []
+            Dragon.all.each do |dragon|
+               binding.pry
                 @chosen.each do |chose|
-                    dragon.name == chose.uncolorize.split("[")[0]
+                    if dragon.name == chose.uncolorize.split("[")[0] #can I use .strip here?
+                        selected << dragon
+                    end
                 end
             end
 
@@ -56,6 +60,8 @@ class SelectionMenu < UI
             selected.each do |dragon|
                 puts "You've chosen #{dragon.name} for your raid."
             end
+
+            binding.pry
 
             #Choose your village
 
@@ -98,6 +104,7 @@ def update_menu_items(new_items_array)
     if new_items_array == nil
         @body = "You don't have any healthy dragons." 
     else
+        @body = "\nSelect your Dragons and then type 'done' to create your raid.\n "
         new_items_array.each_with_index do |new_item, index|
             menu_items[index] = "[#{index + 1}] - #{new_item.name}"
         end
