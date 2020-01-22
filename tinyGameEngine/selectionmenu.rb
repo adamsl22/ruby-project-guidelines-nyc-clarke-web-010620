@@ -92,12 +92,12 @@ class SelectionMenu < UI
 
 def make_choice(num_input)
     #-1 from num input to get the element of the array
-    self.menu_items[num_input - 1] = self.menu_items[num_input - 1].green
-    ## also need to add this choice to the chosen dragons...
-
-    @chosen << self.menu_items[num_input - 1 ].split(" - ")[1]
-    #@chosen.each {|c| puts c + " was added."}
-    
+    if num_input > self.menu_items.count
+        self.prompt
+    else
+        self.menu_items[num_input - 1] = self.menu_items[num_input - 1].green
+        @chosen << self.menu_items[num_input - 1 ].split(" - ")[1]
+    end
     self.prompt
 end
 

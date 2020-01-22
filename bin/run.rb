@@ -72,7 +72,7 @@ create_raid_ui.question_prompt = "Choose dragons for your raid. "
 
 
 ##CREATE LOGIC HERE
-pass = lambda {UI.announce("You chose to rest for a turn.")}
+pass = lambda {UI.soft_announce("You chose to rest for a turn.")}
 main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt), pass)
 
 test = lambda {make_choice(1, create_raid_ui,chosen)}

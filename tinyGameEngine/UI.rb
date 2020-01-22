@@ -256,6 +256,13 @@ class UI
         gets.chomp
     end
 
+    def self.soft_announce(dialogue)
+        UI.blank_space(5)
+        puts LINE_MEDIUM
+        puts dialogue
+        puts LINE_MEDIUM
+    end
+
     def build_border
         if @border_type == "dash-sm" || @border_type == "dash_sm"
             @border_visual = DASH_SHORT
