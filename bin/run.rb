@@ -124,7 +124,7 @@ while i < 999
     ## REGENERATE MENUS
     turn = GameEvent.gameclock
     main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"  
-    main_menu_ui.body = "           Number of Dragons: #{Dragon.all.count}".blue
+    main_menu_ui.body = "       Number of Dragons: #{Dragon.all.count}      Number of Villages: #{Village.all.count} \n".blue
     view_dragons_ui.body = Dragon.list_dragons
     view_humans_ui.body = Village.list_villages
 

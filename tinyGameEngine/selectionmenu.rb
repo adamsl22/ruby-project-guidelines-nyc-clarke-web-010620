@@ -95,7 +95,7 @@ def make_choice(num_input)
     ## also need to add this choice to the chosen dragons...
 
     @chosen << self.menu_items[num_input - 1 ].split(" - ")[1]
-    @chosen.each {|c| puts c + " was added."}
+    #@chosen.each {|c| puts c + " was added."}
     
     self.prompt
 end
