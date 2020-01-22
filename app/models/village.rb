@@ -8,14 +8,26 @@ class Village < ActiveRecord::Base
     def self.population_growth(turn)
         new_pop = 0
         Village.all.each do |village|
-            if turn < 50
-                new_pop = village.population + 0.15 * village.population
-            elsif turn > 49 && turn < 100
-                new_pop = village.population + 0.25 * village.population
-            elsif turn > 99 && turn < 300
-                new_pop = village.population + 0.35 * village.population
+            if village == nomads
+                if turn < 50
+                    new_pop = village.population + 0.03 * village.population
+                elsif turn > 49 && turn < 100
+                    new_pop = village.population + 0.06 * village.population
+                elsif turn > 99 && turn < 300
+                    new_pop = village.population + 0.09 * village.population
+                else
+                    new_pop = village.population + 0.12 * village.population
+                end
             else
-                new_pop = village.population + 0.45 * village.population
+                if turn < 50
+                    new_pop = village.population + 0.15 * village.population
+                elsif turn > 49 && turn < 100
+                    new_pop = village.population + 0.25 * village.population
+                elsif turn > 99 && turn < 300
+                    new_pop = village.population + 0.35 * village.population
+                else
+                    new_pop = village.population + 0.45 * village.population
+                end
             end
             village.update(population: new_pop.round)
         end
@@ -43,13 +55,8 @@ class Village < ActiveRecord::Base
         name_array = [consonants.sample, vowels.sample, consonants.sample, consonants.sample, vowels.sample, consonants.sample, vowels.sample]
         name = name_array.join
         if turn > 5 && self.most_populous_village.population > 25 && village_dice.sample == 3
-            settlers.times do
-                settler_home = Village.all.sample
-                if settler_home.population > 1
-                    new_pop = settler_home.population - 1
-                    settler_home.update(population: new_pop)
-                end
-            end
+            home_pop = self.most_populous_village.population - settlers
+            self.most_populous_village.update(population: home_pop)
             new_village = Village.create(name: name.capitalize, population: settlers, knights: 0, slayers: 0)
             puts "The people have founded the village of #{new_village.name}."
         end
@@ -62,33 +69,39 @@ class Village < ActiveRecord::Base
                 new_knight = village.knights + 1
                 second_knight = village.knights + 2
                 third_knight = village.knights + 3
-                if turn < 50
-                    if knights_dice.sample == 4 || knights_dice.sample == 5
+                if village == nomads
+                    if turn % 10 == 0
                         village.update(knights: new_knight)
-                    end
-                elsif turn > 49 && turn < 100
-                    if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                        village.update(knights: new_knight)
-                    end
-                elsif turn > 99 && turn < 200
-                    village.update(knights: new_knight)
-                    if knights_dice.sample == 4 || knights_dice.sample == 5
-                        village.update(knights: second_knight)
-                    end
-                elsif turn > 199 && turn < 300
-                    village.update(knights: new_knight)
-                    if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                        village.update(knights: second_knight)
-                    end
-                elsif turn > 299 && turn < 400
-                    village.update(knights: second_knight)
-                    if knights_dice.sample == 4 || knights_dice.sample == 5
-                        village.update(knights: third_knight)
                     end
                 else
-                    village.update(knights: second_knight)
-                    if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                        village.update(knights: third_knight)
+                    if turn < 50
+                        if knights_dice.sample == 4 || knights_dice.sample == 5
+                            village.update(knights: new_knight)
+                        end
+                    elsif turn > 49 && turn < 100
+                        if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
+                            village.update(knights: new_knight)
+                        end
+                    elsif turn > 99 && turn < 200
+                        village.update(knights: new_knight)
+                        if knights_dice.sample == 4 || knights_dice.sample == 5
+                            village.update(knights: second_knight)
+                        end
+                    elsif turn > 199 && turn < 300
+                        village.update(knights: new_knight)
+                        if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
+                            village.update(knights: second_knight)
+                        end
+                    elsif turn > 299 && turn < 400
+                        village.update(knights: second_knight)
+                        if knights_dice.sample == 4 || knights_dice.sample == 5
+                            village.update(knights: third_knight)
+                        end
+                    else
+                        village.update(knights: second_knight)
+                        if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
+                            village.update(knights: third_knight)
+                        end
                     end
                 end
             end
