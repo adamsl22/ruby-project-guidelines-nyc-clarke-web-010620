@@ -1,6 +1,8 @@
 require_relative '../config/environment'
 require 'pry'
 
+ActiveRecord::Base.logger = nil
+
 
 
 
@@ -113,37 +115,26 @@ while i < 999
     Village.slayers(turn)
     Dragon.add_hunger
     Dragon.recovery
+    create_raid_ui.clear_menu_items 
     create_raid_ui.update_menu_items(Dragon.available_dragons)
 
 
     ## REGENERATE MENUS
     turn = GameEvent.gameclock
     main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"  
-    main_menu_ui.body = "           Number of Dragons:".blue
+    main_menu_ui.body = "           Number of Dragons: #{Dragon.all.count}".blue
     view_dragons_ui.body = Dragon.list_dragons
     view_humans_ui.body = Village.list_villages
 
 
     ##THIS WILL EVENTUALLY BE A CLASS METHOD
-            new_menu_items_array = Dragon.all.map do |dragon|
-                "#{dragon.name}"
-            end
-            def update_menu_items(new_menu_items_array, menu_object)
-                # this will take in all the dragons after they are added to 
-                # an array and make them menu items.
-                new_menu_items_array.each_with_index do |item, i|
-                    menu_object.menu_items[i] = "[#{i + 1}] - #{item}"
-                end
-            end
-            # call this as update_menu_items(dragons, create_raid_ui)
-            update_menu_items(new_menu_items_array,create_raid_ui)
+
     ###############
 
 
     ## START TURN
     main_menu_ui.prompt
 
-    binding.pry
     ###calculate game
 
     ##RECAP TURN
@@ -159,6 +150,7 @@ while i < 999
     GameEvent.increment_game_clock(1)
     i += 1
 end
+
 puts "Thanks for playing Dragon Maker!"
 end
 

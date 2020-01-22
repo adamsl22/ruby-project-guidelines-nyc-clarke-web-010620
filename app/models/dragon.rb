@@ -47,6 +47,7 @@ class Dragon < ActiveRecord::Base
         healthy_dragons = Dragon.all.select do |dragon|
             dragon.health == "Healthy"
         end
+        binding.pry
         if healthy_dragons.length == 0
             return nil
         else
