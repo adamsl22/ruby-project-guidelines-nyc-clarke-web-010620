@@ -66,9 +66,9 @@ class Raid < ActiveRecord::Base
         deaths = self.raid_pairings.count * death_chance
         dragons_killed = deaths.round
         dragons_killed.times do
-            kill = self.dragons.sample
-            UI.announce("#{kill.name} died during the raid!", "red")
-            kill.destroy
+            dead_dragon = self.dragons.sample
+            UI.announce("#{dead_dragon.name} died during the raid!", "red")
+            dead_dragon.destroy
         end
     end
 
@@ -77,8 +77,9 @@ class Raid < ActiveRecord::Base
         injuries = self.raid_pairings.count * injure_chance
         dragons_injured = injuries.round
         dragons_injured.times do
-            injure = self.dragons.find_by(health: "Healthy")
-            injure.update(health: "Hurt")
+            injured_dragon = self.dragons.find_by(health: "Healthy")
+            binding.pry
+            injured_dragon.update(health: "Hurt")
             UI.announce("#{injure.name} was injured in the raid!", "red")
         end
     end

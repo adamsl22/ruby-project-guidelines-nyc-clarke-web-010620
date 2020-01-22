@@ -76,23 +76,18 @@ class Village < ActiveRecord::Base
                     end
                 else
                     if turn < 50
-                        if knights_dice.sample == 4 || knights_dice.sample == 5
+                        if knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
                             village.update(knights: new_knight)
                         end
                     elsif turn > 49 && turn < 100
-                        if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                            village.update(knights: new_knight)
-                        end
+                        village.update(knights: new_knight)
                     elsif turn > 99 && turn < 200
                         village.update(knights: new_knight)
-                        if knights_dice.sample == 4 || knights_dice.sample == 5
+                        if knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
                             village.update(knights: second_knight)
                         end
                     elsif turn > 199 && turn < 300
-                        village.update(knights: new_knight)
-                        if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                            village.update(knights: second_knight)
-                        end
+                        village.update(knights: second_knight)
                     elsif turn > 299 && turn < 400
                         village.update(knights: second_knight)
                         if knights_dice.sample == 4 || knights_dice.sample == 5
