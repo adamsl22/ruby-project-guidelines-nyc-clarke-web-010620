@@ -34,6 +34,7 @@ class Village < ActiveRecord::Base
     end
 
     def self.first_village
+        nomads = Village.where(name: "Nomads")
         nomad_pop = nomads.population - 15
         nomads.update(population: nomad_pop)
         first_village = Village.create(name: "Primeton", population: 15, knights: 0, slayers: 0)
