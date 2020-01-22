@@ -43,7 +43,7 @@ class Dragon < ActiveRecord::Base
     final_output
     end
 
-    def available_dragons
+    def self.available_dragons
         healthy_dragons = Dragon.all.select do |dragon|
             dragon.health == "Healthy"
         end
