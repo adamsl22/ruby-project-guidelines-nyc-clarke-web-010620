@@ -125,7 +125,7 @@ while i < 999
     ## REGENERATE MENUS
     turn = GameEvent.gameclock
     main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"  
-    main_menu_ui.body = "       Number of Dragons: #{Dragon.all.count}      Number of Villages: #{Village.all.count} \n".blue
+    main_menu_ui.body = "       Number of Dragon Eggs: #{Dragon.eggs} \n".blue
     view_dragons_ui.body = Dragon.list_dragons
     view_humans_ui.body = Village.list_villages
 
@@ -150,6 +150,9 @@ while i < 999
     UI.blank_space(5)
 
 
+    #Check for loss conditions
+    GameEvent.check_for_loss
+
     ##INCREMENT GAME CLOCK AND MOVE TO NEXT WEEK
     GameEvent.increment_game_clock(1)
     i += 1
@@ -159,20 +162,25 @@ puts "Thanks for playing Dragon Maker!"
 end
 
 def create_dragon
-    
-    dragon_name = UI.simple_question("Name your dragon:")
-    UI.blank_space(5)
-    dragon_wingspan = UI.simple_question("What is your dragon's wingspan?")
-    UI.blank_space(5)
-    dragon_color = UI.simple_question("What color is your dragon?")
-    UI.blank_space(5)
-    dragon_pattern = UI.simple_question("What pattern is your dragon?")
-
-
-    Dragon.create(name: dragon_name, wing_span: dragon_wingspan, color: dragon_color, pattern: dragon_pattern, hunger: 0, health: "Healthy")
-    ## create instance of boris here
-    ## create game event here #will need a week 
-    puts "#{dragon_name} has been created!"
+    if Dragon.eggs == 0
+        UI.announce("You have no dragon eggs!", "red")
+        menu = UI.all.find{|menu| menu.menu_title == "main_menu_ui"}
+        menu.prompt
+    else
+        dragon_name = UI.simple_question("Name your dragon:")
+        UI.blank_space(5)
+        dragon_wingspan = UI.simple_question("What is your dragon's wingspan?")
+        UI.blank_space(5)
+        dragon_color = UI.simple_question("What color is your dragon?")
+        UI.blank_space(5)
+        dragon_pattern = UI.simple_question("What pattern is your dragon?")
+        
+        Dragon.create(name: dragon_name, wing_span: dragon_wingspan, color: dragon_color, pattern: dragon_pattern, hunger: 0, health: "Healthy")
+        Dragon.dec_eggs
+        ## create instance of boris here
+        ## create game event here #will need a week 
+        UI.announce("#{dragon_name} has been created!", "blue")
+    end
 end
 
 def create_raid(dragon_selections)
