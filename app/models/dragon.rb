@@ -6,11 +6,11 @@ class Dragon < ActiveRecord::Base
         Dragon.all.each do |dragon|
             new_hunger = dragon.hunger + 1
             dragon.update(hunger: new_hunger)
-            if dragon.hunger == 18
+            if dragon.hunger == 8
                 puts "#{dragon.name} is getting restless."
-            elsif dragon.hunger == 19
+            elsif dragon.hunger == 9
                 puts "#{dragon.name} is very hungry."
-            elsif dragon.hunger == 20
+            elsif dragon.hunger == 10
                 puts "#{dragon.name} has abandoned you in search of food."
                 dragon.destroy
             end
@@ -23,8 +23,10 @@ class Dragon < ActiveRecord::Base
                 dragon.update(health: "Injured")
             elsif dragon.health == "Injured"
                 dragon.update(health: "Recovering")
-            elsif dragon.health == "Recovering"
+            elsif dragon.health == "Recovering" || dragon.health == "Resting"
                 dragon.update(health: "Healthy")
+            elsif dragon.health == "Tired"
+                dragon.update(health: "Resting")
             end
         end
     end

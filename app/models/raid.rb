@@ -91,5 +91,10 @@ class Raid < ActiveRecord::Base
             self.dragons_injured
         end
         self.victims
+        self.dragons.each do |dragon|
+            if dragon.health == "Healthy"
+                dragon.update(health: "Tired")
+            end
+        end
     end
 end

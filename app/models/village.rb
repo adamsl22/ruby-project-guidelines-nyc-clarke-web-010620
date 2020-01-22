@@ -9,11 +9,11 @@ class Village < ActiveRecord::Base
         new_pop = 0
         Village.all.each do |village|
             if turn < 50
-                new_pop = village.population + 0.03 * village.population
+                new_pop = village.population + 0.15 * village.population
             elsif turn > 49 && turn < 100
-                new_pop = village.population + 0.06 * village.population
+                new_pop = village.population + 0.25 * village.population
             else
-                new_pop = village.population + 0.09 * village.population
+                new_pop = village.population + 0.35 * village.population
             end
             village.update(population: new_pop.round)
         end
@@ -34,13 +34,13 @@ class Village < ActiveRecord::Base
 
     def self.new_village(turn)
         village_dice = [1,2,3]
-        population_dice = [15,16,17,18,19,20]
+        population_dice = [10,11,12,13,14,15,16,17,18,19,20]
         settlers = population_dice.sample
         vowels = ["a","e","i","o","u","y"]
         consonants = ["b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","z"]
         name_array = [consonants.sample, vowels.sample, consonants.sample, consonants.sample, vowels.sample, consonants.sample, vowels.sample]
         name = name_array.join
-        if turn > 5 && self.most_populous_village.population > 30 && village_dice.sample == 3
+        if turn > 5 && self.most_populous_village.population > 25 && village_dice.sample == 3
             settlers.times do
                 settler_home = Village.all.sample
                 if settler_home.population > 1
