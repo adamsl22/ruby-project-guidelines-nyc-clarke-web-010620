@@ -20,7 +20,7 @@ class Raid < ActiveRecord::Base
         end
         knights_killed = self.village.knights - new_knights.round
         self.village.update(knights: new_knights.round)
-        puts "Your dragons killed #{knights_killed} knights in the raid!"
+        UI.announce("Your dragons killed #{knights_killed} knights in the raid!", "green")
     end
 
     def slayers_killed
@@ -31,7 +31,7 @@ class Raid < ActiveRecord::Base
             end
             slayers_killed = self.village.slayers - new_slayers.round
             self.village.update(slayers: new_slayers.round)
-            puts "Your dragons killed #{slayers_killed} slayers in the raid!"
+            UI.announce("Your dragons killed #{slayers_killed} slayers in the raid!", "green")
         end
     end
 
@@ -51,13 +51,13 @@ class Raid < ActiveRecord::Base
         end
         new_pop = self.village.population - victims
         self.village.update(population: new_pop)
-        puts "Your dragons consumed #{victims} people."
+        UI.announce("Your dragons consumed #{victims} people.", "green")
         if self.village.population < 1
-            puts "#{self.village.name} was destroyed!"
+            UI.announce("#{self.village.name} was destroyed!", "blue")
             self.village.destroy
         elsif self.village.knights == 0
             self.village.update(knights: 1)
-            puts "A knight has appeared in #{self.village.name} to defend the people from further attacks."
+            UI.announce("A knight has appeared in #{self.village.name} to defend the people from further attacks.", "red")
         end
     end
 
@@ -66,9 +66,9 @@ class Raid < ActiveRecord::Base
         deaths = self.raid_pairings.count * death_chance
         dragons_killed = deaths.round
         dragons_killed.times do
-            kill = self.dragons.sample
-            puts "#{kill.name} died during the raid!"
-            kill.destroy
+            dead_dragon = self.dragons.sample
+            UI.announce("#{dead_dragon.name} died during the raid!", "red")
+            dead_dragon.destroy
         end
     end
 
@@ -77,9 +77,18 @@ class Raid < ActiveRecord::Base
         injuries = self.raid_pairings.count * injure_chance
         dragons_injured = injuries.round
         dragons_injured.times do
-            injure = self.dragons.find_by(health: "Healthy")
-            injure.update(health: "Hurt")
-            puts "#{injure.name} was injured in the raid!"
+            injured_dragon = self.dragons.find_by(health: "Healthy")
+            binding.pry
+            injured_dragon.update(health: "Hurt")
+            UI.announce("#{injure.name} was injured in the raid!", "red")
+        end
+    end
+
+    def locate_egg
+        egg_dice = [1,2,3]
+        if egg_dice.sample == 3 && self.dragons.count > 0
+            Dragon.inc_eggs
+            UI.announce("Your dragons located a dragon egg!", "green")
         end
     end
 
@@ -89,6 +98,7 @@ class Raid < ActiveRecord::Base
             self.slayers_killed
             self.dragons_killed
             self.dragons_injured
+            self.locate_egg
         end
         self.victims
         self.dragons.each do |dragon|

@@ -74,4 +74,14 @@ def self.weeks_summary(week)
     end
 end
 
+def self.check_for_loss
+    if Dragon.all.count == 0 && Dragon.eggs == 0
+        UI.announce("You have no dragons or dragon eggs! Game over!", "red")
+        exit
+    elsif Village.all == nil
+        UI.announce("You have exhausted the food supply! Game over!", "red")
+        exit
+    end
+end
+
 end

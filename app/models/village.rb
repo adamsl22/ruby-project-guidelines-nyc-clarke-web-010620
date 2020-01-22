@@ -38,7 +38,7 @@ class Village < ActiveRecord::Base
         nomad_pop = nomads.population - 15
         nomads.update(population: nomad_pop)
         first_village = Village.create(name: "Primeton", population: 15, knights: 0, slayers: 0)
-        puts "The people have founded the village of Primeton."
+        UI.announce("The people have founded the village of Primeton.", "blue")
     end
 
     def self.most_populous_village
@@ -59,7 +59,7 @@ class Village < ActiveRecord::Base
             home_pop = self.most_populous_village.population - settlers
             self.most_populous_village.update(population: home_pop)
             new_village = Village.create(name: name.capitalize, population: settlers, knights: 0, slayers: 0)
-            puts "The people have founded the village of #{new_village.name}."
+            UI.announce("The people have founded the village of #{new_village.name}.", "blue")
         end
     end
 
@@ -76,23 +76,18 @@ class Village < ActiveRecord::Base
                     end
                 else
                     if turn < 50
-                        if knights_dice.sample == 4 || knights_dice.sample == 5
+                        if knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
                             village.update(knights: new_knight)
                         end
                     elsif turn > 49 && turn < 100
-                        if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                            village.update(knights: new_knight)
-                        end
+                        village.update(knights: new_knight)
                     elsif turn > 99 && turn < 200
                         village.update(knights: new_knight)
-                        if knights_dice.sample == 4 || knights_dice.sample == 5
+                        if knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
                             village.update(knights: second_knight)
                         end
                     elsif turn > 199 && turn < 300
-                        village.update(knights: new_knight)
-                        if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                            village.update(knights: second_knight)
-                        end
+                        village.update(knights: second_knight)
                     elsif turn > 299 && turn < 400
                         village.update(knights: second_knight)
                         if knights_dice.sample == 4 || knights_dice.sample == 5
@@ -113,7 +108,7 @@ class Village < ActiveRecord::Base
         slayer_home = Village.all.sample
         new_slayers = slayer_home.slayers + 1
         slayer_home.update(slayers: new_slayers)
-        puts "Another slayer has emerged among the people."
+        UI.announce("Another slayer has emerged among the people.", "red")
     end
 
     def self.slayers(turn)
@@ -122,7 +117,7 @@ class Village < ActiveRecord::Base
             slayer_home = Village.all.sample
             new_slayers = slayer_home.slayers + 1
             slayer_home.update(slayers: new_slayers)
-            puts "The people are learning how to better kill dragons. A slayer has emerged who poses a grave threat!"
+            UI.announce("The people are learning how to better kill dragons. A slayer has emerged who poses a grave threat!", "red")
         elsif turn == 30 || turn == 40
             self.new_slayer
         elsif turn > 49 && turn < 100 && slayers_dice.sample == 5

@@ -2,16 +2,27 @@ class Dragon < ActiveRecord::Base
     has_many :raid_pairings
     has_many :raids, through: :raid_pairings
 
+    @@eggs = 3
+    def self.eggs
+        @@eggs
+    end
+    def self.dec_eggs
+        @@eggs -= 1
+    end
+    def self.inc_eggs
+        @@eggs += 1
+    end
+
     def self.add_hunger
         Dragon.all.each do |dragon|
             new_hunger = dragon.hunger + 1
             dragon.update(hunger: new_hunger)
             if dragon.hunger == 8
-                puts "#{dragon.name} is getting restless."
+                UI.announce("#{dragon.name} is getting restless.", "red")
             elsif dragon.hunger == 9
-                puts "#{dragon.name} is very hungry."
+                UI.announce("#{dragon.name} is very hungry.", "red")
             elsif dragon.hunger == 10
-                puts "#{dragon.name} has abandoned you in search of food."
+                UI.announce("#{dragon.name} has abandoned you in search of food.", "red")
                 dragon.destroy
             end
         end
