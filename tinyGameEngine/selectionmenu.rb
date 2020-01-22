@@ -54,12 +54,13 @@ class SelectionMenu < UI
 
             puts selected
             selected.each do |dragon|
-                puts "You've chosen #{dragon.name} for your raid."
+                puts "You have chosen #{dragon.name} for your raid."
             end
 
             #Choose your village
+
             dice = [1,2,3,4,5,6]
-            new_raid = Raid.create(village_id: selected_village.id, dice_roll = dice.sample)
+            new_raid = Raid.create(village_id: selected_village.id, dice_roll: dice.sample)
             selected.each do |dragon|
                 new_pairing = RaidPairing.create(raid_id: new_raid.id, dragon_id: dragon.id)
             end
@@ -101,7 +102,7 @@ end
 
 def update_menu_items(new_items_array)
     if new_items_array == nil
-        @body = "You don't have any healthy dragons." 
+        @body = "You have no dragons available to raid." 
     else
         new_items_array.each_with_index do |new_item, index|
             menu_items[index] = "[#{index + 1}] - #{new_item.name}"
