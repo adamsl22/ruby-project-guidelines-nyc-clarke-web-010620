@@ -56,8 +56,12 @@ class SelectionMenu < UI
             selected.each do |dragon|
                 puts "You've chosen #{dragon.name} for your raid."
             end
-            selected
 
+            #Choose your village
+
+            #Raid(#village_id, #diceRoll)
+            #RaidPairing(#raid_id, #dragon_id)
+            
         elsif input == "clear"
             clear_choices
         else
@@ -94,11 +98,12 @@ def update_menu_items(new_items_array)
     if new_items_array == nil
         @body = "You don't have any healthy dragons." 
     else
-        new_items_array.each_with_index(new_item, index)
-            menu_items[index] = "[#{index + 1}] - #{new_item}"
+        new_items_array.each_with_index do |new_item, index|
+            menu_items[index] = "[#{index + 1}] - #{new_item.name}"
         end
     end
 end
+
 
 
 def clear_choices
@@ -107,6 +112,5 @@ def clear_choices
     end
     self.prompt
 end
-
 
 end
