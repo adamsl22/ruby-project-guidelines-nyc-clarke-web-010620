@@ -23,7 +23,9 @@ class Dragon < ActiveRecord::Base
                 dragon.update(health: "Injured")
             elsif dragon.health == "Injured"
                 dragon.update(health: "Recovering")
-            elsif dragon.health == "Recovering" || dragon.health == "Resting"
+            elsif dragon.health == "Recovering"
+                dragon.update(health: "Resting")
+            elsif dragon.health == "Resting"
                 dragon.update(health: "Healthy")
             elsif dragon.health == "Tired"
                 dragon.update(health: "Resting")
@@ -47,7 +49,6 @@ class Dragon < ActiveRecord::Base
         healthy_dragons = Dragon.all.select do |dragon|
             dragon.health == "Healthy"
         end
-        binding.pry
         if healthy_dragons.length == 0
             return nil
         else

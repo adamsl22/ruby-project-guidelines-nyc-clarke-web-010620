@@ -111,7 +111,7 @@ end
 
 
 def update_menu_items(new_items_array)
-    binding.pry
+    #binding.pry
     if new_items_array == nil
         @body = "You have no dragons available to raid." 
     else
@@ -123,7 +123,7 @@ def update_menu_items(new_items_array)
         new_items_array.each_with_index do |new_item, index|
             @menu_items[index] = "[#{index + 1}] - #{new_item.name}"
         end
-        binding.pry
+        #binding.pry
     end
 end
 
