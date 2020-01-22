@@ -143,7 +143,7 @@ while i < 999
     ## START TURN
     main_menu_ui.prompt
 
-    binding.pry
+    #binding.pry
     ###calculate game
 
     ##RECAP TURN

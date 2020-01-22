@@ -70,7 +70,7 @@ class SelectionMenu < UI
             self.update_menu_items_village(Village.all)
             village_prompt
 
-            binding.pry
+            #binding.pry
             
         elsif input == "clear"
             clear_choices
