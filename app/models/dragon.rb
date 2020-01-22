@@ -42,4 +42,15 @@ class Dragon < ActiveRecord::Base
         end
     final_output
     end
+
+    def available_dragons
+        healthy_dragons = Dragon.all.select do |dragon|
+            dragon.health == "Healthy"
+        end
+        if healthy_dragons.length == 0
+            return nil
+        else
+            return healthy_dragons
+        end
+    end
 end
