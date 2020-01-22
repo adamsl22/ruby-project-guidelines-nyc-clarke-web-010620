@@ -9,11 +9,13 @@ class Village < ActiveRecord::Base
         new_pop = 0
         Village.all.each do |village|
             if turn < 50
-                new_pop = village.population + 0.03 * village.population
+                new_pop = village.population + 0.15 * village.population
             elsif turn > 49 && turn < 100
-                new_pop = village.population + 0.06 * village.population
+                new_pop = village.population + 0.25 * village.population
+            elsif turn > 99 && turn < 300
+                new_pop = village.population + 0.35 * village.population
             else
-                new_pop = village.population + 0.09 * village.population
+                new_pop = village.population + 0.45 * village.population
             end
             village.update(population: new_pop.round)
         end
@@ -34,13 +36,13 @@ class Village < ActiveRecord::Base
 
     def self.new_village(turn)
         village_dice = [1,2,3]
-        population_dice = [15,16,17,18,19,20]
+        population_dice = [10,11,12,13,14,15,16,17,18,19,20]
         settlers = population_dice.sample
         vowels = ["a","e","i","o","u","y"]
         consonants = ["b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","z"]
         name_array = [consonants.sample, vowels.sample, consonants.sample, consonants.sample, vowels.sample, consonants.sample, vowels.sample]
         name = name_array.join
-        if turn > 5 && self.most_populous_village.population > 30 && village_dice.sample == 3
+        if turn > 5 && self.most_populous_village.population > 25 && village_dice.sample == 3
             settlers.times do
                 settler_home = Village.all.sample
                 if settler_home.population > 1
@@ -57,35 +59,79 @@ class Village < ActiveRecord::Base
         knights_dice = [1,2,3,4,5]
         Village.all.each do |village|
             if village.knights > 0
-                new_knights = village.knights + 1
-                if turn < 50 && knights_dice.sample == 5
-                    village.update(knights: new_knights)
+                new_knight = village.knights + 1
+                second_knight = village.knights + 2
+                third_knight = village.knights + 3
+                if turn < 50
+                    if knights_dice.sample == 4 || knights_dice.sample == 5
+                        village.update(knights: new_knight)
+                    end
                 elsif turn > 49 && turn < 100
-                    if knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
-                        village.update(knights: new_knights)
+                    if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
+                        village.update(knights: new_knight)
+                    end
+                elsif turn > 99 && turn < 200
+                    village.update(knights: new_knight)
+                    if knights_dice.sample == 4 || knights_dice.sample == 5
+                        village.update(knights: second_knight)
+                    end
+                elsif turn > 199 && turn < 300
+                    village.update(knights: new_knight)
+                    if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
+                        village.update(knights: second_knight)
+                    end
+                elsif turn > 299 && turn < 400
+                    village.update(knights: second_knight)
+                    if knights_dice.sample == 4 || knights_dice.sample == 5
+                        village.update(knights: third_knight)
                     end
                 else
-                    village.update(knights: new_knights)
+                    village.update(knights: second_knight)
+                    if knights_dice.sample == 2 || knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
+                        village.update(knights: third_knight)
+                    end
                 end
             end
         end
     end
 
+    def self.new_slayer
+        slayer_home = Village.all.sample
+        new_slayers = slayer_home.slayers + 1
+        slayer_home.update(slayers: new_slayers)
+        puts "Another slayer has emerged among the people."
+    end
+
     def self.slayers(turn)
         slayers_dice = [1,2,3,4,5]
-        if turn == 30 || turn == 40
+        if turn == 20
             slayer_home = Village.all.sample
             new_slayers = slayer_home.slayers + 1
             slayer_home.update(slayers: new_slayers)
+            puts "The people are learning how to better kill dragons. A slayer has emerged who poses a grave threat!"
+        elsif turn == 30 || turn == 40
+            self.new_slayer
         elsif turn > 49 && turn < 100 && slayers_dice.sample == 5
-            slayer_home = Village.all.sample
-            new_slayers = slayer_home.slayers + 1
-            slayer_home.update(slayers: new_slayers)
-        elsif turn > 99
+            self.new_slayer
+        elsif turn > 99 && turn < 200
+            if slayers_dice.sample == 3 || slayers_dice.sample == 4 || slayers_dice.sample == 5
+                self.new_slayer
+            end
+        elsif turn > 199 && turn < 300
+            if slayers_dice.sample == 2 || slayers_dice.sample == 3 || slayers_dice.sample == 4 || slayers_dice.sample == 5
+                self.new_slayer
+            end
+        elsif turn > 299 && turn < 400
+            if slayers_dice.sample == 2 || slayers_dice.sample == 3 || slayers_dice.sample == 4 || slayers_dice.sample == 5
+                self.new_slayer
+            end
             if slayers_dice.sample == 4 || slayers_dice.sample == 5
-                slayer_home = Village.all.sample
-                new_slayers = slayer_home.slayers + 1
-                slayer_home.update(slayers: new_slayers)
+                self.new_slayer
+            end
+        elsif turn > 399
+            self.new_slayer
+            if slayers_dice.sample == 3 || slayers_dice.sample == 4 || slayers_dice.sample == 5
+                self.new_slayer
             end
         end
     end
