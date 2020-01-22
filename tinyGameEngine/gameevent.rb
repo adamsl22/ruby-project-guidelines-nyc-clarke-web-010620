@@ -46,6 +46,11 @@ end
 def self.weeks_summary(week)
     
     weeks_events(week).each do |event|
+        if event.event_object.class == Method
+            event.event_object.call
+            return
+        end
+
         if event.event_object.class == Product
         puts LINE_SQUIGGLES_MEDIUM.blue
         puts event.display.blue

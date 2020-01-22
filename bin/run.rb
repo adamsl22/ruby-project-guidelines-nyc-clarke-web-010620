@@ -91,9 +91,10 @@ create_raid_ui.set_logic(test, test2, test3, test4, test5, test6, test7, test8, 
 
 
 ##SETUP GAME EVENTS HERE
+GameEvent.new(Village.method(:first_village), 3, "")
 # GameEvent.new(nil, 3, ) #will need to run the method "Village.first_village"
-GameEvent.new(nil, 30, "THE VILLAGES ARE GETTING STRONGER... better watch yourself.")
-GameEvent.new(nil, 40, "Testing")
+# GameEvent.new(nil, 30, "THE VILLAGES ARE GETTING STRONGER... better watch yourself.")
+# GameEvent.new(nil, 40, "Testing")
 
 
 
