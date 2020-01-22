@@ -5,7 +5,7 @@ require 'pry'
 
 
 def begin_game
-##Setup Turn Clock
+
 
 #clear database
 Dragon.delete_all
@@ -13,7 +13,7 @@ RaidPairing.delete_all
 Raid.delete_all
 Village.delete_all
 
-
+##Setup Turn Clock
 turn = GameEvent.gameclock
 
 ## BUILD MENUS HERE
@@ -113,6 +113,7 @@ while i < 999
     Village.slayers(turn)
     Dragon.add_hunger
     Dragon.recovery
+    create_raid_ui.update_menu_items(Dragon.available_dragons)
 
 
     ## REGENERATE MENUS
