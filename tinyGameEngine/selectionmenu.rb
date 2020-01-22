@@ -6,6 +6,7 @@ class SelectionMenu < UI
         @chosen = []
         @selected = []
         @village_chosen = ""
+        @menu_items_unlocked = [true, true, true, true, true, true, true, true, true]
     end
 
 

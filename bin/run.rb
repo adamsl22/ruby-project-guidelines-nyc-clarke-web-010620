@@ -20,7 +20,7 @@ turn = GameEvent.gameclock
 
 ## BUILD MENUS HERE
 main_menu_ui = UI.new("main_menu_ui")
-main_menu_ui.menu_items =["[1] - Create a Dragon", "[2] - View Dragons", "[3] - Check Human Population", "   [4] - Create a Raid"]
+main_menu_ui.menu_items =["[1] - Create a Dragon", "[2] - View Dragons      ", "[3] - Check Human Population", "   [4] - Create a Raid", "[5] - Pass", ""]
 main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"
 main_menu_ui.body = "           Number of Dragons:".blue
 main_menu_ui.has_border = true
@@ -72,7 +72,8 @@ create_raid_ui.question_prompt = "Choose dragons for your raid. "
 
 
 ##CREATE LOGIC HERE
-main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt))
+pass = lambda {UI.announce("You chose to rest for a turn.")}
+main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt), pass)
 
 test = lambda {make_choice(1, create_raid_ui,chosen)}
 test2 = lambda {make_choice(2, create_raid_ui,chosen)}
