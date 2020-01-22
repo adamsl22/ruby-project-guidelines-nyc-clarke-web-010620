@@ -115,6 +115,7 @@ while i < 999
     Village.slayers(turn)
     Dragon.add_hunger
     Dragon.recovery
+    create_raid_ui.clear_chosen
     create_raid_ui.clear_menu_items 
     create_raid_ui.update_menu_items(Dragon.available_dragons)
 

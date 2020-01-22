@@ -155,7 +155,12 @@ def clear_choices
     self.menu_items = self.menu_items.map do |item|
         item = item.black
     end
+    @chosen = []
     self.prompt
+end
+
+def clear_chosen
+    @chosen = []
 end
 
 def village_prompt
