@@ -128,6 +128,7 @@ while i < 999
     Village.new_village(turn)
     Village.knights(turn)
     Village.slayers(turn)
+    Village.attack(turn)
     Dragon.add_hunger
     Dragon.recovery
     create_raid_ui.clear_chosen

@@ -8,15 +8,11 @@ class Village < ActiveRecord::Base
     def self.population_growth(turn)
         new_pop = 0
         Village.all.each do |village|
-            if village.name == "Nomads" && village.population > 17
-                if turn < 50
+            if village.name == "Nomads"
+                if village.population > 17 && turn < 100
                     new_pop = village.population + 0.03 * village.population
-                elsif turn > 49 && turn < 100
-                    new_pop = village.population + 0.06 * village.population
-                elsif turn > 99 && turn < 300
-                    new_pop = village.population + 0.09 * village.population
-                else
-                    new_pop = village.population + 0.12 * village.population
+                elsif village.population < 18 && turn < 100
+                    new_pop = village.population + 0.15 * village.population
                 end
             else
                 if turn < 50
@@ -55,7 +51,7 @@ class Village < ActiveRecord::Base
         consonants = ["b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","z"]
         name_array = [consonants.sample, vowels.sample, consonants.sample, consonants.sample, vowels.sample, consonants.sample, vowels.sample]
         name = name_array.join
-        if turn > 5 && self.most_populous_village.population > 25 && village_dice.sample == 3
+        if turn > 5 && self.most_populous_village.population > 25 && village_dice.sample == 3 && Village.all.count < 15
             home_pop = self.most_populous_village.population - settlers
             self.most_populous_village.update(population: home_pop)
             new_village = Village.create(name: name.capitalize, population: settlers, knights: 0, slayers: 0)
@@ -157,5 +153,111 @@ class Village < ActiveRecord::Base
             end
         end
     final_output
+    end
+
+    def self.attack(turn)
+        attack_dice = [1,2,3,4,5,6]
+        attack_chance = attack_dice.sample
+        attack_roll = attack_dice.sample
+        your_roll = attack_dice.sample
+        attacking_village = Village.all.sample
+        if attacking_village.knights > 25 && turn > 55 && attack_chance == 6
+            #Attack
+            UI.announce("Knights from #{attacking_village.name} are attacking!", "red")
+            if turn < 100
+                attacking_knights = 10
+            elsif turn > 99 && turn < 200
+                attacking_knights = 15
+            else
+                attacking_knights = 20
+            end
+            UI.announce("#{attacking_knights} knights approach your dragons.", "red")
+            if attacking_village.slayers > 0
+                if turn < 100
+                    attacking_slayers = 1
+                elsif turn > 99 && turn < 200 && attacking_village.slayers > 1
+                    attacking_slayers = 2
+                else
+                    attacking_slayers = attacking_village.slayers
+                end
+                UI.announce("They are accompanied by #{attacking_slayers} slayers.", "red")
+            end
+            #Rolls
+            if attack_roll < 3
+                UI.announce("The attackers roll a #{attack_roll}.", "green")
+            elsif attack_roll > 4
+                UI.announce("The attackers roll a #{attack_roll}.", "red")
+            else
+                UI.announce("The attackers roll a #{attack_roll}.", "blue")
+            end
+            if your_roll < 3
+                UI.announce("You roll a #{your_roll}.", "red")
+            elsif your_roll > 4
+                UI.announce("You roll a #{your_roll}.", "green")
+            else
+                UI.announce("You roll a #{your_roll}.", "blue")
+            end
+            #DV
+            defending_dragons = Dragon.all.count
+            outnumbered_ratio = attacking_knights.to_f / defending_dragons.to_f
+            danger = outnumbered_ratio + 3.00 * attacking_slayers.to_f
+            roll_difference = attack_roll.to_f - your_roll.to_f
+            danger_value = danger + roll_difference
+            if danger_value < 0.00
+                UI.announce("Your dragons destroyed all attackers!", "green")
+                new_knights = attacking_village.knights - attacking_knights
+                new_slayers = attacking_village.slayers - attacking_slayers
+                attacking_village.update(knights: new_knights, slayers: new_slayers)
+            else
+                #Knights
+                dead_knights = attacking_knights.to_f - danger_value / 2.00
+                if dead_knights < 0.00
+                    dead_knights = 0
+                end
+                new_knights = attacking_village.knights - dead_knights.round
+                attacking_village.update(knights: new_knights)
+                UI.announce("Your dragons killed #{dead_knights.round} attacking knights!", "green")
+                #Slayers
+                if attacking_slayers > 0
+                    slayer_hardiness = 6.25 + roll_difference
+                    dead_slayers = attacking_slayers.to_f / slayer_hardiness
+                    new_slayers = attacking_village.slayers - dead_slayers.round
+                    attacking_village.update(slayers: new_slayers)
+                    UI.announce("Your dragons killed #{dead_slayers.round} attacking slayers!", "green")
+                end
+                #Dragon Deaths
+                if roll_difference > 1
+                    death_chance = (danger_value - 5) / 20.00
+                else
+                    death_chance = 0
+                end
+                deaths = defending_dragons * death_chance
+                dragons_killed = deaths.round
+                if dragons_killed > defending_dragons
+                    dragons_killed = defending_dragons
+                end
+                dragons_killed.times do
+                    dead_dragon = Dragon.all.sample
+                    UI.announce("#{dead_dragon.name} was killed in the attack!", "red")
+                    Dragon.kill_dragon(dead_dragon)
+                end
+                #Dragon Injuries
+                if dragons_killed < defending_dragons
+                    injure_chance = (danger_value - 3.5) / 10.00
+                    injuries = defending_dragons * injure_chance
+                    dragons_injured = injuries.round
+                    if dragons_injured > (defending_dragons - dragons_killed)
+                        dragons_injued = defending_dragons - dragons_killed
+                    end
+                    dragons_injured.times do
+                        injured_dragon = Dragon.all.sample
+                        if injured_dragon.health != "Hurt"
+                            UI.announce("#{injured_dragon.name} was injured in the attack!", "red")
+                            Dragon.injure_dragon(injured_dragon)
+                        end
+                    end
+                end
+            end
+        end
     end
 end
