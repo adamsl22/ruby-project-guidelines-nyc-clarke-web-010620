@@ -262,11 +262,24 @@ class UI
         gets.chomp
     end
 
-    def self.soft_announce(dialogue)
-        UI.blank_space(5)
-        puts LINE_MEDIUM
-        puts dialogue
-        puts LINE_MEDIUM
+    def self.soft_announce(dialogue, color = nil)
+        if !color
+            puts LINE_MEDIUM
+            puts dialogue
+            puts LINE_MEDIUM
+        elsif color == "green"
+            puts LINE_MEDIUM.green
+            puts dialogue.green
+            puts LINE_MEDIUM.green
+        elsif color == "red"
+            puts LINE_MEDIUM.red
+            puts dialogue.red
+            puts LINE_MEDIUM.red
+        elsif color == "blue"
+            puts LINE_MEDIUM.blue
+            puts dialogue.blue
+            puts LINE_MEDIUM.blue
+        end
     end
 
     def build_border

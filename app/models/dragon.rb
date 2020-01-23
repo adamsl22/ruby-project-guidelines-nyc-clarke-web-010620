@@ -2,7 +2,7 @@ class Dragon < ActiveRecord::Base
     has_many :raid_pairings
     has_many :raids, through: :raid_pairings
 
-    @@eggs = 3
+    @@eggs = 0
     def self.eggs
         @@eggs
     end
@@ -11,6 +11,9 @@ class Dragon < ActiveRecord::Base
     end
     def self.inc_eggs
         @@eggs += 1
+    end
+    def self.eggs=(num)
+        @@eggs = num
     end
 
     def self.add_hunger
