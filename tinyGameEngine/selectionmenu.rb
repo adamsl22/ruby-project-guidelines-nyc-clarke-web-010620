@@ -13,6 +13,10 @@ class SelectionMenu < UI
         @@selected
     end
 
+    def self.clear_selected
+        @@selected = []
+    end
+
     def visual 
             i = 0
             while i < (menu_items.count)

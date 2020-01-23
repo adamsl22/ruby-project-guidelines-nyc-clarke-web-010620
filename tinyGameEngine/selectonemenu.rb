@@ -41,7 +41,7 @@ def prompt
 
             if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
                 #get_input(input)
-            elsif input.to_i == 0 || input.to_i > menu_items.count
+            elsif input.to_i == 0 || input.to_i > menu_items.count || input == nil || input == ""
                 puts "Option not available.".red
                 self.prompt
             else
@@ -67,7 +67,7 @@ def prompt
                 UI.announce("Dice roll: #{new_raid.dice_roll}", "blue")
             end
             new_raid.result
-            
+            SelectionMenu.clear_selected
         end
 end
 
