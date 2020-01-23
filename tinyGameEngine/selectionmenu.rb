@@ -6,9 +6,18 @@ class SelectionMenu < UI
         @chosen = []
         @selected = []
         @village_chosen = ""
-        @menu_items_unlocked = [true, true, true, true, true, true, true, true, true]
+        
     end
 
+    def visual 
+            i = 0
+            while i < (menu_items.count)
+                
+                puts "   #{menu_items[i]}"
+                i += 1
+            end
+            
+    end
 
     def prompt
         #this will puts out the visual
@@ -46,7 +55,9 @@ class SelectionMenu < UI
         if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
             get_input(input)
         elsif input == "done"
-
+            if @chosen == nil || @chosen == []
+                self.prompt
+            end
             @chosen.each {|chose| puts "your chosen items #{chose}"}
             @selected = []
             Dragon.all.each do |dragon|
@@ -71,6 +82,8 @@ class SelectionMenu < UI
             
         elsif input == "clear"
             clear_choices
+        elsif input == ""
+            self.prompt
         else
             input = input.to_i
             make_choice(input)
@@ -92,7 +105,7 @@ class SelectionMenu < UI
 
 def make_choice(num_input)
     #-1 from num input to get the element of the array
-    if num_input > self.menu_items.count
+    if num_input > self.menu_items.count || num_input == "" || num_input == nil || num_input == "\n"
         self.prompt
     else
         self.menu_items[num_input - 1] = self.menu_items[num_input - 1].green
@@ -103,16 +116,19 @@ end
 
 
 def make_one_choice(num_input)
+    if num_input > self.menu_items.count || num_input == "" || num_input == nil
+        self.village_prompt
+    else
     village_string = self.menu_items[num_input - 1 ].split(" - ")[1]
-    
-    @village_chosen = Village.all.find do |village| 
-        village_string == village.name
-     end
+        @village_chosen = Village.all.find do |village| 
+            village_string == village.name
+        end
+    end
 end
 
 
 def update_menu_items(new_items_array)
-    #binding.pry
+    
     if new_items_array == nil
         @body = "You have no dragons available to raid." 
     else
@@ -124,7 +140,7 @@ def update_menu_items(new_items_array)
         new_items_array.each_with_index do |new_item, index|
             @menu_items[index] = "[#{index + 1}] - #{new_item.name}"
         end
-        #binding.pry
+        
     end
 end
 
@@ -202,11 +218,12 @@ def village_prompt
         else
             input = input.to_i
             make_one_choice(input)
+            clear_chosen
+            clear_menu_items
         end
 
 
-            #should create the raid.
-
+            #raid created
             dice = [1,2,3,4,5,6]
             new_raid = Raid.create(village_id: @village_chosen.id, dice_roll: dice.sample)
             @selected.each do |dragon|

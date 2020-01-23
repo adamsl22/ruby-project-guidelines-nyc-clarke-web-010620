@@ -177,8 +177,14 @@ class UI
             exit
         elsif input.to_s == "h" || input.to_s == "help"||input.to_s == "-h"
             puts HELP.magenta
-        
             UI.ask_for_enter
+            self.prompt
+        elsif input.to_s == "rosebud" 
+            UI.announce("This is not the sims... nice try")
+            self.prompt
+        elsif input.to_s == "seed_database"
+            UI.announce("Your database has been seeded")
+            GameEvent.seed_database(3, 10)
             self.prompt
         else
             UI.blank_space(5)
@@ -220,7 +226,7 @@ class UI
         end
         # get input from player
         input = gets.chomp
-        if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
+        if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h" || input == "seed_database" || input == "rosebud"
         else
             input = input.to_i
         end

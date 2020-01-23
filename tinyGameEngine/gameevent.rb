@@ -84,4 +84,18 @@ def self.check_for_loss
     end
 end
 
+
+def self.seed_database(num_of_dragons, num_of_villages)
+    i = 0
+    while i < num_of_dragons
+    Dragon.create(name: "Barius#{i}", wing_span: "12", color: "Blue", pattern: "Test", health: "Healthy", hunger: 1 )
+    i += 1
+    end
+    j = 0
+    while j < num_of_villages
+    Village.create(name: "Village#{j}", population: 30, knights: 15, slayers: 1)
+    j += 1
+    end
+end
+
 end
