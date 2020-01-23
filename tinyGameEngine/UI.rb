@@ -6,8 +6,8 @@ class UI
 
     attr_accessor :visual, :menu_items, :logic, :body, :header, :response, :final_output,
     :has_border, :border_type, :border_visual, :has_divider, :question_prompt, :return_value, :get_return_value, :parent_menu,
-    :layout_type, :menu_items_unlocked
-    attr_reader :menu_title
+    :layout_type, :menu_items_unlocked, :menu_title
+    
 
     @@all = []
 

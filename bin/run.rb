@@ -61,6 +61,17 @@ create_raid_ui.layout_type = "vertical"
 create_raid_ui.parent_menu = main_menu_ui
 create_raid_ui.question_prompt = "Choose dragons for your raid. "
 
+choose_village_ui = SelectOneMenu.new("choose_village_ui") 
+choose_village_ui.menu_items = ["", ""]
+choose_village_ui.header = "                          CREATE RAID"
+choose_village_ui.body = "\n   There are no villages.\n".blue
+choose_village_ui.has_border =  true
+choose_village_ui.border_type = "carrot-md"
+choose_village_ui.has_divider = true
+choose_village_ui.layout_type = "vertical"
+choose_village_ui.parent_menu = main_menu_ui
+choose_village_ui.question_prompt = "Choose dragons for your raid. "
+
 ###END OF MENU CREATION
 
 
@@ -71,17 +82,17 @@ main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), 
 ## make choice, once you make that choice that choice either turns 
 ## green or turns black again.. 
 ## also adds it to your chosen
-## dragons that will be carried to the next part of the raid.
-test = lambda {make_choice(1, create_raid_ui,chosen)}
-test2 = lambda {make_choice(2, create_raid_ui,chosen)}
-test3 = lambda {make_choice(3, create_raid_ui,chosen)}
-test4 = lambda {make_choice(4, create_raid_ui,chosen)}
-test5 = lambda {make_choice(5, create_raid_ui,chosen)}
-test6 = lambda {make_choice(6, create_raid_ui,chosen)}
-test7 = lambda {make_choice(7, create_raid_ui,chosen)}
-test8 = lambda {make_choice(8, create_raid_ui,chosen)}
-test9 = lambda {make_choice(9, create_raid_ui,chosen)}
-create_raid_ui.set_logic(test, test2, test3, test4, test5, test6, test7, test8, test9)  
+# ## dragons that will be carried to the next part of the raid.
+# test = lambda {make_choice(1, create_raid_ui,chosen)}
+# test2 = lambda {make_choice(2, create_raid_ui,chosen)}
+# test3 = lambda {make_choice(3, create_raid_ui,chosen)}
+# test4 = lambda {make_choice(4, create_raid_ui,chosen)}
+# test5 = lambda {make_choice(5, create_raid_ui,chosen)}
+# test6 = lambda {make_choice(6, create_raid_ui,chosen)}
+# test7 = lambda {make_choice(7, create_raid_ui,chosen)}
+# test8 = lambda {make_choice(8, create_raid_ui,chosen)}
+# test9 = lambda {make_choice(9, create_raid_ui,chosen)}
+# create_raid_ui.set_logic(test, test2, test3, test4, test5, test6, test7, test8, test9)  
 ##END OF CREATE LOGIC
 
 

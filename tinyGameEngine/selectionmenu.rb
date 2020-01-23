@@ -1,12 +1,16 @@
 class SelectionMenu < UI
     
+    @@selected = []
     
     def initialize(menu_title)
         super
         @chosen = []
-        @selected = []
         @village_chosen = ""
-        
+
+    end
+
+    def self.selected
+        @@selected
     end
 
     def visual 
@@ -15,8 +19,7 @@ class SelectionMenu < UI
                 
                 puts "   #{menu_items[i]}"
                 i += 1
-            end
-            
+            end 
     end
 
     def prompt
@@ -53,41 +56,45 @@ class SelectionMenu < UI
         input = gets.chomp
         
 
-        if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
+        if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h" 
             get_input(input)
         elsif input == "done"
             if @chosen == nil || @chosen == []
                 self.prompt
             end
             @chosen.each {|chose| puts "your chosen items #{chose}"}
-            @selected = []
+            @@selected = []
             Dragon.all.each do |dragon|
                
                 @chosen.each do |chose|
                     if dragon.name == chose.uncolorize.split("[")[0] #can I use .strip here?
-                        @selected << dragon
+                        @@selected << dragon
                     end
                 end
             end
 
-            puts @selected
-            @selected.each do |dragon|
+            puts @@selected
+            @@selected.each do |dragon|
                 puts "You have chosen #{dragon.name} for your raid."
             end
 
-
-           
-            #need a Choose Village prompt...
-            self.update_menu_items_village(Village.all)
-            village_prompt
+            #goes to the village menu
+            choose_village_ui = UI.all.find do |item|
+                item.menu_title == "choose_village_ui"
+            end
+            choose_village_ui.prompt
             
         elsif input == "clear"
             clear_choices
         elsif input == ""
-            #self.prompt
+            self.prompt
+        elsif input.to_i > menu_items.count || input.to_i == 0
+                puts "option not available".red
+                self.prompt
         else
             input = input.to_i
             make_choice(input)
+            
         end
         
         # make decision using that input about what method to run
@@ -131,24 +138,6 @@ def update_menu_items(new_items_array)
     end
 end
 
-
-def update_menu_items_village(new_items_array)
-    ##regenerate same menu with the village items...
-    if new_items_array == nil
-        @body = "There are no Villages to attack." 
-    else
-        @menu_items.each_with_index do |item, index|
-            menu_items[index] = ""
-        end
-        @body = "\nSelect the Village you want to attack.\n "
-        @question_prompt = "Choose a Village for your raid."
-        new_items_array.each_with_index do |new_item, index|
-            menu_items[index] = "[#{index + 1}] - #{new_item.name}"
-        end
-    end
-end
-
-
 def clear_menu_items
         @menu_items = []
         # @menu_items.each_with_index do |item, index|
@@ -172,77 +161,4 @@ def clear_chosen
     @chosen = []
 end
 
-
-def make_one_choice(num_input)
-    if num_input > self.menu_items.count || num_input == "" || num_input == nil
-        self.village_prompt
-    else
-    village_string = self.menu_items[num_input - 1 ].split(" - ")[1]
-        @village_chosen = Village.all.find do |village| 
-            village_string == village.name
-        end
-    end
-end
-
-    def village_prompt  
-    ##will reprompt the menu this time with all villages
-    ## then will create the raid finally
-        UI.blank_space(5)
-        build_border
-        if @has_border 
-            puts border_visual
-        end
-        puts @header
-        if @has_divider
-            puts border_visual
-        end
-        if @body.class == Method
-        puts @body.call
-        else
-        puts @body
-        end
-        self.visual
-        if @has_border
-            puts border_visual
-        end
-        if @question_prompt.class == String
-        puts @question_prompt
-        elsif @question_prompt.class == Array
-            @question_prompt.each do |ele|
-                puts ele
-            end
-        end
-        # get input from player
-
-        input = gets.chomp
-
-
-            if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
-                get_input(input)
-                
-            else
-                input = input.to_i
-                make_one_choice(input)
-                # clear_chosen
-                # empty_array_menu_items
-            end
-
-
-            #raid created
-            dice = [1,2,3,4,5,6]
-            new_raid = Raid.create(village_id: @village_chosen.id, dice_roll: dice.sample)
-            @selected.each do |dragon|
-                new_pairing = RaidPairing.create(raid_id: new_raid.id, dragon_id: dragon.id)
-            end
-            UI.announce("Your raid has begun!", "blue")
-            if new_raid.dice_roll < 3
-                UI.announce("Dice roll: #{new_raid.dice_roll}", "red")
-            elsif new_raid.dice_roll > 4
-                UI.announce("Dice roll: #{new_raid.dice_roll}", "green")
-            else
-                UI.announce("Dice roll: #{new_raid.dice_roll}", "blue")
-            end
-            new_raid.result
-            
-        end
 end
