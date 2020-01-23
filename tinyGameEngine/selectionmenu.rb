@@ -66,7 +66,7 @@ class SelectionMenu < UI
             if @chosen == nil || @chosen == []
                 self.prompt
             end
-            @chosen.each {|chose| puts "your chosen items #{chose}"}
+            #@chosen.each {|chose| puts "your chosen items #{chose}"}
             @@selected = []
             Dragon.all.each do |dragon|
                
@@ -77,7 +77,7 @@ class SelectionMenu < UI
                 end
             end
 
-            puts @@selected
+            #puts @@selected
             @@selected.each do |dragon|
                 puts "You have chosen #{dragon.name} for your raid."
             end
