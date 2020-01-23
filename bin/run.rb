@@ -89,7 +89,7 @@ choose_village_ui.question_prompt = "Choose dragons for your raid. "
 ##CREATE LOGIC HERE
 pass = lambda {UI.soft_announce("You chose to rest for a turn.")}
 # help = lambda {}
-main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt), pass, UI.method(:help))
+main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt), pass, main_menu_ui.method(:help))
 
 ## make choice, once you make that choice that choice either turns 
 ## green or turns black again.. 

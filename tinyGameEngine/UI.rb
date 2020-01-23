@@ -414,7 +414,7 @@ class UI
         @return_value = gets.chomp
     end
 
-    def self.help
+    def help
         puts HELP.magenta
         UI.ask_for_enter
         self.prompt
