@@ -51,6 +51,7 @@ class SelectionMenu < UI
         # get input from player
 
         input = gets.chomp
+        
 
         if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
             get_input(input)
@@ -74,16 +75,16 @@ class SelectionMenu < UI
                 puts "You have chosen #{dragon.name} for your raid."
             end
 
+
+           
             #need a Choose Village prompt...
             self.update_menu_items_village(Village.all)
             village_prompt
-
-            #binding.pry
             
         elsif input == "clear"
             clear_choices
         elsif input == ""
-            self.prompt
+            #self.prompt
         else
             input = input.to_i
             make_choice(input)
@@ -94,8 +95,6 @@ class SelectionMenu < UI
         if @response
             puts @response
         end
-        
-        #self.get_input
     end
 
     def chosen
@@ -112,18 +111,6 @@ def make_choice(num_input)
         @chosen << self.menu_items[num_input - 1 ].split(" - ")[1]
     end
     self.prompt
-end
-
-
-def make_one_choice(num_input)
-    if num_input > self.menu_items.count || num_input == "" || num_input == nil
-        self.village_prompt
-    else
-    village_string = self.menu_items[num_input - 1 ].split(" - ")[1]
-        @village_chosen = Village.all.find do |village| 
-            village_string == village.name
-        end
-    end
 end
 
 
@@ -163,9 +150,14 @@ end
 
 
 def clear_menu_items
-        @menu_items.each_with_index do |item, index|
-            menu_items[index] = ""
-        end
+        @menu_items = []
+        # @menu_items.each_with_index do |item, index|
+        #     menu_items[index] = []]
+        # end
+end
+
+def empty_array_menu_items
+    @menu_items = []
 end
 
 def clear_choices
@@ -180,7 +172,19 @@ def clear_chosen
     @chosen = []
 end
 
-def village_prompt
+
+def make_one_choice(num_input)
+    if num_input > self.menu_items.count || num_input == "" || num_input == nil
+        self.village_prompt
+    else
+    village_string = self.menu_items[num_input - 1 ].split(" - ")[1]
+        @village_chosen = Village.all.find do |village| 
+            village_string == village.name
+        end
+    end
+end
+
+    def village_prompt  
     ##will reprompt the menu this time with all villages
     ## then will create the raid finally
         UI.blank_space(5)
@@ -212,15 +216,16 @@ def village_prompt
 
         input = gets.chomp
 
-        if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
-            get_input(input)
-            
-        else
-            input = input.to_i
-            make_one_choice(input)
-            clear_chosen
-            clear_menu_items
-        end
+
+            if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
+                get_input(input)
+                
+            else
+                input = input.to_i
+                make_one_choice(input)
+                # clear_chosen
+                # empty_array_menu_items
+            end
 
 
             #raid created
@@ -238,7 +243,6 @@ def village_prompt
                 UI.announce("Dice roll: #{new_raid.dice_roll}", "blue")
             end
             new_raid.result
-
+            
         end
-
 end

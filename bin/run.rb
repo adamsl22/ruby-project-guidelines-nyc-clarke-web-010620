@@ -61,20 +61,17 @@ create_raid_ui.layout_type = "vertical"
 create_raid_ui.parent_menu = main_menu_ui
 create_raid_ui.question_prompt = "Choose dragons for your raid. "
 
-
-
-
-
-## put this into UI
-
-
-
+###END OF MENU CREATION
 
 
 ##CREATE LOGIC HERE
 pass = lambda {UI.soft_announce("You chose to rest for a turn.")}
 main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt), pass)
 
+## make choice, once you make that choice that choice either turns 
+## green or turns black again.. 
+## also adds it to your chosen
+## dragons that will be carried to the next part of the raid.
 test = lambda {make_choice(1, create_raid_ui,chosen)}
 test2 = lambda {make_choice(2, create_raid_ui,chosen)}
 test3 = lambda {make_choice(3, create_raid_ui,chosen)}
@@ -85,19 +82,11 @@ test7 = lambda {make_choice(7, create_raid_ui,chosen)}
 test8 = lambda {make_choice(8, create_raid_ui,chosen)}
 test9 = lambda {make_choice(9, create_raid_ui,chosen)}
 create_raid_ui.set_logic(test, test2, test3, test4, test5, test6, test7, test8, test9)  
-
-## make choice, once you make that choice that choice either turns green or turns black again.. also adds it to your chosen
-## dragons that will be carried to the next part of the raid.
-
+##END OF CREATE LOGIC
 
 
 ##SETUP GAME EVENTS HERE
 GameEvent.new(Village.method(:first_village), 3, "")
-# GameEvent.new(nil, 3, ) #will need to run the method "Village.first_village"
-# GameEvent.new(nil, 30, "THE VILLAGES ARE GETTING STRONGER... better watch yourself.")
-# GameEvent.new(nil, 40, "Testing")
-
-
 
 
 
@@ -111,6 +100,8 @@ UI.ask_for_enter
 ## MAIN GAME LOOP
 i = 0
 while i < 999
+    ## Update game state
+    turn = GameEvent.gameclock
     Village.population_growth(turn)
     Village.new_village(turn)
     Village.knights(turn)
@@ -123,23 +114,15 @@ while i < 999
 
 
     ## REGENERATE MENUS
-    turn = GameEvent.gameclock
     main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"  
-    main_menu_ui.body = "       Number of Dragon Eggs: #{Dragon.eggs} \n".blue
+    main_menu_ui.body = "       Dragons #{Dragon.all.count}       Dragon Eggs: #{Dragon.eggs}        Villages: #{Village.all.count}\n".blue
     view_dragons_ui.body = Dragon.list_dragons
     view_humans_ui.body = Village.list_villages
-
-
-    ##THIS WILL EVENTUALLY BE A CLASS METHOD
-
-    ###############
 
 
     ## START TURN
     main_menu_ui.prompt
 
-    #binding.pry
-    ###calculate game
 
     ##RECAP TURN
     UI.blank_space(5)
