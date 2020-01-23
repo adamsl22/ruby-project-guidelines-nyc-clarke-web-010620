@@ -401,5 +401,11 @@ class UI
         @return_value = gets.chomp
     end
 
+    def self.help
+        puts HELP.magenta
+        UI.ask_for_enter
+        self.prompt
+    end
+
     
 end

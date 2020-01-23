@@ -11,6 +11,7 @@ def begin_game
     if Dragon.all == []
 
     else
+        UI.blank_space(5)
         UI.soft_announce("Would you like to start a new game? \n 
         [1] - Start New Game [2] - Continue Previous" )
         input = gets.chomp
@@ -31,7 +32,7 @@ turn = GameEvent.gameclock
 
 ## BUILD MENUS HERE
 main_menu_ui = UI.new("main_menu_ui")
-main_menu_ui.menu_items =["[1] - Create a Dragon", "[2] - View Dragons      ", "[3] - Check Human Population", "   [4] - Create a Raid", "[5] - Pass", ""]
+main_menu_ui.menu_items =["[1] - Create a Dragon", "[2] - View Dragons      ", "[3] - Check Human Population", "       [4] - Create a Raid", "    [5] - Pass", "[6] - Help"]
 main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"
 main_menu_ui.body = "           Number of Dragons:".blue
 main_menu_ui.has_border = true
@@ -88,7 +89,8 @@ choose_village_ui.question_prompt = "Choose dragons for your raid. "
 
 ##CREATE LOGIC HERE
 pass = lambda {UI.soft_announce("You chose to rest for a turn.")}
-main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt), pass)
+# help = lambda {}
+main_menu_ui.set_logic(method(:create_dragon), view_dragons_ui.method(:prompt), view_humans_ui.method(:prompt) , create_raid_ui.method(:prompt), pass, UI.method(:help))
 
 ## make choice, once you make that choice that choice either turns 
 ## green or turns black again.. 
