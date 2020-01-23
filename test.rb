@@ -22,10 +22,10 @@ require 'pry'
 # create_raid_ui.update_menu_items(Dragon.available_dragons)
 # create_raid_ui.prompt
 #test_raid6.result
-# d1 = Dragon.create(name: "t1", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
-# d2 = Dragon.create(name: "t2", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
-# d3 = Dragon.create(name: "t3", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
-# d4 = Dragon.create(name: "t4", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
+d1 = Dragon.create(name: "t1", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
+d2 = Dragon.create(name: "t2", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
+d3 = Dragon.create(name: "t3", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
+d4 = Dragon.create(name: "t4", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
 #d5 = Dragon.create(name: "t5", wing_span: "3", color: "red", pattern: "none")
 #d6 = Dragon.create(name: "t6", wing_span: "3", color: "red", pattern: "none")
 # new_village = Village.create(name: "test", population: 4, knights: 27, slayers: 2)
@@ -37,4 +37,4 @@ require 'pry'
 
 # Village.attack(210)
 
-binding.pry
+#binding.pry
