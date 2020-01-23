@@ -37,21 +37,23 @@ class Raid < ActiveRecord::Base
 
     def victims
         victims = 0
-        if self.danger_value > 1
-            massacre = self.hunger / self.danger_value
-            victims = massacre.round
-            self.dragons.each do |dragon|
-                own_vic = dragon.hunger / self.danger_value
-                new_hunger = dragon.hunger - own_vic.round
-                dragon.update(hunger: new_hunger)
+        if self.dragons.count > 0
+            if self.danger_value > 1
+                massacre = self.hunger / self.danger_value
+                victims = massacre.round
+                self.dragons.each do |dragon|
+                    own_vic = dragon.hunger / self.danger_value
+                    new_hunger = dragon.hunger - own_vic.round
+                    dragon.update(hunger: new_hunger)
+                end
+            else
+                victims = self.hunger
+                self.dragons.update(hunger: 0)
             end
-        else
-            victims = self.hunger
-            self.dragons.update(hunger: 0)
+            new_pop = self.village.population - victims
+            self.village.update(population: new_pop)
+            UI.announce("Your dragons consumed #{victims} people.", "green")
         end
-        new_pop = self.village.population - victims
-        self.village.update(population: new_pop)
-        UI.announce("Your dragons consumed #{victims} people.", "green")
         if self.village.population < 1
             UI.announce("#{self.village.name} was destroyed!", "blue")
             self.village.destroy
@@ -61,26 +63,29 @@ class Raid < ActiveRecord::Base
         end
     end
 
-    def dragons_killed
+    def dragons_killed_or_injured
         death_chance = (self.danger_value - 5) * 0.2
         deaths = self.raid_pairings.count * death_chance
         dragons_killed = deaths.round
-        dragons_killed.times do
-            dead_dragon = self.dragons.sample
-            UI.announce("#{dead_dragon.name} died during the raid!", "red")
-            dead_dragon.destroy
+        if dragons_killed > self.raid_pairings.count
+            dragons_killed = self.raid_pairings.count
         end
-    end
-
-    def dragons_injured
-        injure_chance = (self.danger_value - 3.5) * 0.65
-        injuries = self.raid_pairings.count * injure_chance
-        dragons_injured = injuries.round
-        dragons_injured.times do
-            injured_dragon = self.dragons.find_by(health: "Healthy")
-            binding.pry
-            injured_dragon.update(health: "Hurt")
-            UI.announce("#{injure.name} was injured in the raid!", "red")
+        dragons_killed.times do
+            dead_dragon = self.dragons.find_by(health: "Healthy")
+            UI.announce("#{dead_dragon.name} died during the raid!", "red")
+            Dragon.kill_dragon(dead_dragon)
+        end
+        if dragons_killed < self.raid_pairings.count
+            injure_chance = (self.danger_value - 3.5) * 0.65
+            injuries = self.raid_pairings.count * injure_chance
+            dragons_injured = injuries.round
+            dragons_injured.times do
+                injured_dragon = self.dragons.find_by(health: "Healthy")
+                if injured_dragon
+                    Dragon.injure_dragon(injured_dragon)
+                    UI.announce("#{injured_dragon.name} was injured in the raid!", "red")
+                end
+            end
         end
     end
 
@@ -96,8 +101,7 @@ class Raid < ActiveRecord::Base
         if self.danger_value > 0.00
             self.knights_killed
             self.slayers_killed
-            self.dragons_killed
-            self.dragons_injured
+            self.dragons_killed_or_injured
             self.locate_egg
         end
         self.victims

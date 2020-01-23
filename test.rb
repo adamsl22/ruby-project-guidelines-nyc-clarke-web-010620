@@ -29,5 +29,11 @@ require 'pry'
 #test_raid6.result
 
 
+# new_dragon = Dragon.create(name: "test", wing_span: "3", color: "red", pattern: "none", hunger: 8, health: "Healthy")
+# new_village = Village.create(name: "test", population: 4, knights: 10, slayers: 2)
+# new_raid = Raid.create(village_id: new_village.id, dice_roll: 2)
+# new_pairing = RaidPairing.create(raid_id: new_raid.id, dragon_id: new_dragon.id)
+
+# new_raid.result
 
 binding.pry

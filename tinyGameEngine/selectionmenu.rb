@@ -229,8 +229,14 @@ def village_prompt
             @selected.each do |dragon|
                 new_pairing = RaidPairing.create(raid_id: new_raid.id, dragon_id: dragon.id)
             end
-            puts "Your raid has begun!"
-            puts "Dice roll: #{new_raid.dice_roll}"
+            UI.announce("Your raid has begun!", "blue")
+            if new_raid.dice_roll < 3
+                UI.announce("Dice roll: #{new_raid.dice_roll}", "red")
+            elsif new_raid.dice_roll > 4
+                UI.announce("Dice roll: #{new_raid.dice_roll}", "green")
+            else
+                UI.announce("Dice roll: #{new_raid.dice_roll}", "blue")
+            end
             new_raid.result
 
         end
