@@ -68,6 +68,7 @@ class Dragon < ActiveRecord::Base
     end
 
     def self.kill_dragon(dragon)
+        dragon.update(health: "Dead")
         dragon.destroy
     end
 

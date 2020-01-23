@@ -120,8 +120,10 @@ class Village < ActiveRecord::Base
             UI.announce("The people are learning how to better kill dragons. A slayer has emerged who poses a grave threat!", "red")
         elsif turn == 30 || turn == 40
             self.new_slayer
-        elsif turn > 49 && turn < 100 && slayers_dice.sample == 5
-            self.new_slayer
+        elsif turn > 49 && turn < 100
+            if slayers_dice.sample == 4 || slayers_dice.sample == 5
+                self.new_slayer
+            end
         elsif turn > 99 && turn < 200
             if slayers_dice.sample == 3 || slayers_dice.sample == 4 || slayers_dice.sample == 5
                 self.new_slayer
