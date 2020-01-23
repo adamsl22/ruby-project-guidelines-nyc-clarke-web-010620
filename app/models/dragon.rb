@@ -50,7 +50,7 @@ class Dragon < ActiveRecord::Base
             final_output = "\n                You do not have any dragons. \n      ".blue
         else
             Dragon.all.each do |dragon|
-                final_output = final_output + "___________________________________________________________\n   Name: #{dragon.name}    |   Hunger: #{dragon.hunger}  |   Health: #{dragon.health} \n ___________________________________________________________ \n  "
+                final_output = final_output + "___________________________________________________________\n   Name: #{dragon.name}  |  Wing Span: #{dragon.wing_span}  |  Hunger: #{dragon.hunger}  \n   Color: #{dragon.color}     |  Pattern: #{dragon.pattern}  |  Health: #{dragon.health} \n ___________________________________________________________ \n  "
             end
         end
     final_output
