@@ -8,12 +8,23 @@ ActiveRecord::Base.logger = nil
 
 def begin_game
 
+    if Dragon.all == []
 
-#clear database
-Dragon.delete_all
-RaidPairing.delete_all
-Raid.delete_all
-Village.delete_all
+    else
+        UI.soft_announce("Would you like to start a new game? \n 
+        [1] - Start New Game [2] - Continue Previous" )
+        input = gets.chomp
+        if input == "1"
+            #clear database
+            Dragon.delete_all
+            RaidPairing.delete_all
+            Raid.delete_all
+            Village.delete_all
+            Dragon.eggs = 3 
+        elsif input.to_i == "2"
+            Dragon.eggs = 0
+        end
+    end
 
 ##Setup Turn Clock
 turn = GameEvent.gameclock
