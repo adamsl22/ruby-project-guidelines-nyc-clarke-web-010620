@@ -22,7 +22,6 @@ def begin_game
             Village.delete_all
             Dragon.eggs = 3 
         elsif input.to_i == "2"
-            Dragon.eggs = 0
         end
     end
 
@@ -148,12 +147,12 @@ while i < 999
 
 
     ##RECAP TURN
-    UI.blank_space(5)
+    #UI.blank_space(5)
     #UI.announce("Turn #{turn} is over! Let's see how you fared...")
     UI.blank_space(5)
     GameEvent.weeks_summary(turn) #function that puts out the weeks events
     UI.ask_for_enter
-    UI.blank_space(5)
+    #UI.blank_space(5)
 
 
     #Check for loss conditions
@@ -185,7 +184,7 @@ def create_dragon
         Dragon.dec_eggs
         ## create instance of boris here
         ## create game event here #will need a week 
-        UI.announce("#{dragon_name} has been created!", "blue")
+        UI.soft_announce("#{dragon_name} has been created!", "green")
     end
 end
 

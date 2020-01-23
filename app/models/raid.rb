@@ -52,14 +52,14 @@ class Raid < ActiveRecord::Base
             end
             new_pop = self.village.population - victims
             self.village.update(population: new_pop)
-            UI.announce("Your dragons consumed #{victims} people.", "green")
+            UI.soft_announce("Your dragons consumed #{victims} people.", "green")
         end
         if self.village.population < 1
-            UI.announce("#{self.village.name} was destroyed!", "blue")
+            UI.soft_announce("#{self.village.name} was destroyed!", "blue")
             self.village.destroy
         elsif self.village.knights == 0
             self.village.update(knights: 1)
-            UI.announce("A knight has appeared in #{self.village.name} to defend the people from further attacks.", "red")
+            UI.soft_announce("A knight has appeared in #{self.village.name} to defend the people from further attacks.", "red")
         end
     end
 
