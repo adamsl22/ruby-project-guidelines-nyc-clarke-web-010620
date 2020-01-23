@@ -6,6 +6,8 @@ require_relative '../tinyGameEngine/UI.rb'
 require_relative '../tinyGameEngine/gameevent.rb'
 require_relative '../tinyGameEngine/gametrigger.rb'
 require_relative '../tinyGameEngine/selectionmenu.rb'
+require_relative '../tinyGameEngine/selectonemenu.rb'
+
 
 require_relative'../app/models/dragon.rb'
 require_relative'../app/models/raid_pairing.rb'

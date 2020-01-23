@@ -1,14 +1,30 @@
 class SelectionMenu < UI
     
+    @@selected = []
     
     def initialize(menu_title)
         super
         @chosen = []
-        @selected = []
         @village_chosen = ""
-        @menu_items_unlocked = [true, true, true, true, true, true, true, true, true]
+
     end
 
+    def self.selected
+        @@selected
+    end
+
+    def self.clear_selected
+        @@selected = []
+    end
+
+    def visual 
+            i = 0
+            while i < (menu_items.count)
+                
+                puts "   #{menu_items[i]}"
+                i += 1
+            end 
+    end
 
     def prompt
         #this will puts out the visual
@@ -42,38 +58,47 @@ class SelectionMenu < UI
         # get input from player
 
         input = gets.chomp
+        
 
-        if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
+        if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h" 
             get_input(input)
         elsif input == "done"
-
+            if @chosen == nil || @chosen == []
+                self.prompt
+            end
             @chosen.each {|chose| puts "your chosen items #{chose}"}
-            @selected = []
+            @@selected = []
             Dragon.all.each do |dragon|
                
                 @chosen.each do |chose|
                     if dragon.name == chose.uncolorize.split("[")[0] #can I use .strip here?
-                        @selected << dragon
+                        @@selected << dragon
                     end
                 end
             end
 
-            puts @selected
-            @selected.each do |dragon|
+            puts @@selected
+            @@selected.each do |dragon|
                 puts "You have chosen #{dragon.name} for your raid."
             end
 
-            #need a Choose Village prompt...
-            self.update_menu_items_village(Village.all)
-            village_prompt
-
-            #binding.pry
+            #goes to the village menu
+            choose_village_ui = UI.all.find do |item|
+                item.menu_title == "choose_village_ui"
+            end
+            choose_village_ui.prompt
             
         elsif input == "clear"
             clear_choices
+        elsif input == ""
+            self.prompt
+        elsif input.to_i > menu_items.count || input.to_i == 0
+                puts "option not available".red
+                self.prompt
         else
             input = input.to_i
             make_choice(input)
+            
         end
         
         # make decision using that input about what method to run
@@ -81,8 +106,6 @@ class SelectionMenu < UI
         if @response
             puts @response
         end
-        
-        #self.get_input
     end
 
     def chosen
@@ -92,7 +115,7 @@ class SelectionMenu < UI
 
 def make_choice(num_input)
     #-1 from num input to get the element of the array
-    if num_input > self.menu_items.count
+    if num_input > self.menu_items.count || num_input == "" || num_input == nil || num_input == "\n"
         self.prompt
     else
         self.menu_items[num_input - 1] = self.menu_items[num_input - 1].green
@@ -102,17 +125,8 @@ def make_choice(num_input)
 end
 
 
-def make_one_choice(num_input)
-    village_string = self.menu_items[num_input - 1 ].split(" - ")[1]
-    
-    @village_chosen = Village.all.find do |village| 
-        village_string == village.name
-     end
-end
-
-
 def update_menu_items(new_items_array)
-    #binding.pry
+    
     if new_items_array == nil
         @body = "You have no dragons available to raid." 
     else
@@ -124,32 +138,19 @@ def update_menu_items(new_items_array)
         new_items_array.each_with_index do |new_item, index|
             @menu_items[index] = "[#{index + 1}] - #{new_item.name}"
         end
-        #binding.pry
+        
     end
 end
-
-
-def update_menu_items_village(new_items_array)
-    ##regenerate same menu with the village items...
-    if new_items_array == nil
-        @body = "There are no Villages to attack." 
-    else
-        @menu_items.each_with_index do |item, index|
-            menu_items[index] = ""
-        end
-        @body = "\nSelect the Village you want to attack.\n "
-        @question_prompt = "Choose a Village for your raid."
-        new_items_array.each_with_index do |new_item, index|
-            menu_items[index] = "[#{index + 1}] - #{new_item.name}"
-        end
-    end
-end
-
 
 def clear_menu_items
-        @menu_items.each_with_index do |item, index|
-            menu_items[index] = ""
-        end
+        @menu_items = []
+        # @menu_items.each_with_index do |item, index|
+        #     menu_items[index] = []]
+        # end
+end
+
+def empty_array_menu_items
+    @menu_items = []
 end
 
 def clear_choices
@@ -163,65 +164,5 @@ end
 def clear_chosen
     @chosen = []
 end
-
-def village_prompt
-    ##will reprompt the menu this time with all villages
-    ## then will create the raid finally
-        UI.blank_space(5)
-        build_border
-        if @has_border 
-            puts border_visual
-        end
-        puts @header
-        if @has_divider
-            puts border_visual
-        end
-        if @body.class == Method
-        puts @body.call
-        else
-        puts @body
-        end
-        self.visual
-        if @has_border
-            puts border_visual
-        end
-        if @question_prompt.class == String
-        puts @question_prompt
-        elsif @question_prompt.class == Array
-            @question_prompt.each do |ele|
-                puts ele
-            end
-        end
-        # get input from player
-
-        input = gets.chomp
-
-        if input == "back" || input == "quit" || input == "h" || input == "help"||input == "-h"
-            get_input(input)
-            
-        else
-            input = input.to_i
-            make_one_choice(input)
-        end
-
-
-            #should create the raid.
-
-            dice = [1,2,3,4,5,6]
-            new_raid = Raid.create(village_id: @village_chosen.id, dice_roll: dice.sample)
-            @selected.each do |dragon|
-                new_pairing = RaidPairing.create(raid_id: new_raid.id, dragon_id: dragon.id)
-            end
-            UI.announce("Your raid has begun!", "blue")
-            if new_raid.dice_roll < 3
-                UI.announce("Dice roll: #{new_raid.dice_roll}", "red")
-            elsif new_raid.dice_roll > 4
-                UI.announce("Dice roll: #{new_raid.dice_roll}", "green")
-            else
-                UI.announce("Dice roll: #{new_raid.dice_roll}", "blue")
-            end
-            new_raid.result
-
-        end
 
 end
