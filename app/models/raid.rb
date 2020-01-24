@@ -64,6 +64,7 @@ class Raid < ActiveRecord::Base
     end
 
     def dragons_killed_or_injured
+        healthy_dragons = self.dragons
         death_chance = (self.danger_value - 5) * 0.2
         deaths = self.raid_pairings.count * death_chance
         dragons_killed = deaths.round
@@ -71,19 +72,21 @@ class Raid < ActiveRecord::Base
             dragons_killed = self.raid_pairings.count
         end
         dragons_killed.times do
-            dead_dragon = self.dragons.find_by(health: "Healthy")
+            dead_dragon = healthy_dragons.sample
             UI.announce("#{dead_dragon.name} died during the raid!", "red")
             Dragon.kill_dragon(dead_dragon)
+            healthy_dragons.delete(dead_dragon)
         end
         if dragons_killed < self.raid_pairings.count
             injure_chance = (self.danger_value - 3.5) * 0.65
             injuries = self.raid_pairings.count * injure_chance
             dragons_injured = injuries.round
             dragons_injured.times do
-                injured_dragon = self.dragons.find_by(health: "Healthy")
+                injured_dragon = healthy_dragons.sample
                 if injured_dragon
                     Dragon.injure_dragon(injured_dragon)
                     UI.announce("#{injured_dragon.name} was injured in the raid!", "red")
+                    healthy_dragons.delete(injured_dragon)
                 end
             end
         end
