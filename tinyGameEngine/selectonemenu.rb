@@ -6,6 +6,15 @@ def initialize(menu_title)
         @village_chosen = ""
 end
 
+def visual 
+    i = 0
+    while i < (menu_items.count)
+        
+        puts "   #{menu_items[i]}"
+        i += 1
+    end 
+end
+
 def prompt  
     update_menu_items_village(Village.all)
     ##will reprompt the menu this time with all villages

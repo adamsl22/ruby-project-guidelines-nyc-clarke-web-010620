@@ -21,7 +21,8 @@ def begin_game
             RaidPairing.delete_all
             Raid.delete_all
             Village.delete_all
-            Dragon.eggs = 3 
+            Dragon.eggs = 3
+            Village.nomads
         elsif input.to_i == "2"
         end
     end
@@ -115,7 +116,6 @@ GameEvent.new(Village.method(:first_village), 3, "")
 
 ## begin game  
 system("clear")
-Village.nomads
 
 UI.billboard("WELCOME TO DRAGON MAKER!")
 UI.ask_for_enter
