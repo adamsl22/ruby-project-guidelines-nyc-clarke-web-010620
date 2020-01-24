@@ -83,13 +83,13 @@ class Village < ActiveRecord::Base
                 else
                     if turn < 50
                         if village.knights < 15
-                            village.update(knights: new_knight)
+                            village.update(knights: second_knight)
                         elsif knights_dice.sample == 3 || knights_dice.sample == 4 || knights_dice.sample == 5
                             village.update(knights: new_knight)
                         end
                     elsif turn > 49 && turn < 100
                         if village.knights < 20
-                            village.update(knights: second_knight)
+                            village.update(knights: third_knight)
                         else
                             village.update(knights: new_knight)
                         end
@@ -121,6 +121,17 @@ class Village < ActiveRecord::Base
                         end
                     end
                 end
+            end
+        end
+        unraided_villages = Village.all.select {|village| village.knights == 0}
+        if turn % 5 == 0 && unraided_villages.count > 0
+            if turn > 49 && unraided_villages.count > 1
+                unraided_villages.each {|village| village.update(knights: 1)}
+                UI.soft_announce("Fear of your dragons is spreading. More villages are beginning to train knights.", "red")
+            else
+                news_recipient = unraided_villages.sample
+                news_recipient.update(knights: 1)
+                UI.soft_announce("News of your dragon raids has spread to #{news_recipient.name}. The village has begun training knights in fear of your attacks.", "red")
             end
         end
     end
@@ -225,7 +236,7 @@ class Village < ActiveRecord::Base
             #DV
             defending_dragons = Dragon.all.count
             outnumbered_ratio = attacking_knights.to_f / defending_dragons.to_f
-            danger = outnumbered_ratio + 3.00 * attacking_slayers.to_f
+            danger = outnumbered_ratio + 5.00 * attacking_slayers.to_f
             roll_difference = attack_roll.to_f - your_roll.to_f
             danger_value = danger + roll_difference
             if danger_value < 0.00

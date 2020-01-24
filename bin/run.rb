@@ -139,7 +139,7 @@ while i < 999
 
     ## REGENERATE MENUS
     main_menu_ui.header = "                     Dragon Maker - Turn # #{turn}"  
-    main_menu_ui.body = "       Dragons #{Dragon.all.count}       Dragon Eggs: #{Dragon.eggs}        Villages: #{Village.all.count}\n".blue
+    main_menu_ui.body = "       Dragons: #{Dragon.all.count}       Dragon Eggs: #{Dragon.eggs}        Villages: #{Village.all.count}\n".blue
     view_dragons_ui.body = Dragon.list_dragons
     view_humans_ui.body = Village.list_villages
 

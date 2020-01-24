@@ -9,12 +9,12 @@ class Raid < ActiveRecord::Base
 
     def danger_value
         outnumbered_ratio = self.village.knights.to_f / self.raid_pairings.count.to_f
-        danger = outnumbered_ratio + 3.00 * self.village.slayers.to_f
+        danger = outnumbered_ratio + 5.00 * self.village.slayers.to_f
         danger_value = danger / self.dice_roll.to_f
     end
 
     def knights_killed
-        new_knights = self.village.knights * 0.15 * self.danger_value
+        new_knights = self.village.knights * 0.4 * self.danger_value
         if new_knights.round > self.village.knights
             new_knights = self.village.knights
         end
