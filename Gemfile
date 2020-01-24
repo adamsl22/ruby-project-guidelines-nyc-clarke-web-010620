@@ -6,4 +6,4 @@ gem "sqlite3"
 gem "pry"
 gem "require_all"
 gem "colorize"
-gem 'rest-client'
+# gem 'rest-client'
