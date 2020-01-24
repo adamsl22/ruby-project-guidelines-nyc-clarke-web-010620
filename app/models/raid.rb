@@ -90,10 +90,24 @@ class Raid < ActiveRecord::Base
     end
 
     def locate_egg
-        egg_dice = [1,2,3]
-        if egg_dice.sample == 3 && self.dragons.count > 0
-            Dragon.inc_eggs
-            UI.announce("Your dragons located a dragon egg!", "green")
+        egg_dice = [*1..20]
+        if self.dragons.count > 0
+            if Dragon.all.count < 4
+                if egg_dice.sample == 16 || egg_dice.sample == 17 || egg_dice.sample == 18 || egg_dice.sample == 19 || egg_dice.sample == 20
+                    Dragon.inc_eggs
+                    UI.announce("Your dragons located a dragon egg!", "green")
+                end
+            elsif Dragon.all.count > 3 && Dragon.all.count < 7
+                if egg_dice.sample == 19 || egg_dice.sample == 20
+                    Dragon.inc_eggs
+                    UI.announce("Your dragons located a dragon egg!", "green")
+                end
+            else
+                if egg_dice.sample == 20
+                    Dragon.inc_eggs
+                    UI.announce("Your dragons located a dragon egg!", "green")
+                end
+            end
         end
     end
 
