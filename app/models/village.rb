@@ -15,7 +15,7 @@ class Village < ActiveRecord::Base
                     new_pop = village.population + 0.30 * village.population
                 end
             else
-                if village.population < 30
+                if village.population < 25
                     if turn < 50
                         new_pop = village.population + 0.30 * village.population
                     elsif turn > 49 && turn < 100
