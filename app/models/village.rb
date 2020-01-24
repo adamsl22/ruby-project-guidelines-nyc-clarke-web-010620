@@ -133,7 +133,7 @@ class Village < ActiveRecord::Base
             else
                 news_recipient = unraided_villages.sample
                 news_recipient.update(knights: 1)
-                UI.soft_announce("News of your dragon raids has spread to #{news_recipient.name}. The village has begun training knights in fear of your attacks.", "red")
+                UI.soft_announce("News of your dragon raids has spread to #{news_recipient.name}.\n The village has begun training knights in fear of your \nattacks.", "red")
             end
         end
     end
@@ -151,7 +151,7 @@ class Village < ActiveRecord::Base
             slayer_home = Village.all.sample
             new_slayers = slayer_home.slayers + 1
             slayer_home.update(slayers: new_slayers)
-            UI.soft_announce("The people are learning how to better kill dragons. A slayer has emerged who poses a grave threat!", "red")
+            UI.soft_announce("The people are learning how to better kill dragons. A\nslayer has emerged who poses a grave threat!", "red")
         elsif turn == 30 || turn == 40
             self.new_slayer
         elsif turn > 49 && turn < 100

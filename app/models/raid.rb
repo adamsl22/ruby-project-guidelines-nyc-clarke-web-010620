@@ -59,7 +59,7 @@ class Raid < ActiveRecord::Base
             self.village.destroy
         elsif self.village.knights == 0
             self.village.update(knights: 1)
-            UI.soft_announce("A knight has appeared in #{self.village.name} to defend the people from further attacks.", "red")
+            UI.soft_announce("A knight has appeared in #{self.village.name} to defend the \npeople from further attacks.", "red")
         end
     end
 

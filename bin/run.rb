@@ -9,7 +9,7 @@ ActiveRecord::Base.logger = nil
 def begin_game
 
     if Dragon.all == []
-
+        
     else
         UI.blank_space(5)
         UI.soft_announce("Would you like to start a new game? \n 
@@ -71,7 +71,7 @@ create_raid_ui.border_type = "carrot-md"
 create_raid_ui.has_divider = true
 create_raid_ui.layout_type = "vertical"
 create_raid_ui.parent_menu = main_menu_ui
-create_raid_ui.question_prompt = "Choose dragons for your raid. "
+create_raid_ui.question_prompt = "[back] to go back"
 
 choose_village_ui = SelectOneMenu.new("choose_village_ui") 
 choose_village_ui.menu_items = ["", ""]
