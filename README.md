@@ -1,11 +1,26 @@
+# DRAGON MAKER
+
+Thank you for taking a look at Dragon Maker, a game created by Adam L and Andrew Richards. It utilizes Active Record database migrations as well as a self developed UI system called the Tiny Game Engine. 
+This project was created to showcase knowledge of creating databases, creating migrations and showing our knowledge of Ruby. 
+
+# DRAGON MAKER - NAVIGATING THE GAME
+
+* Choose a number and press enter on any menu that gives menu choices.
+* If you navigate to a menu that you didn't mean to, type 'back' and press enter.
+* When making multiple choices of dragons, choose the dragons you want and then
+type 'done' and press enter. 
+* To clear this menu if you made a mistake, type 'clear' and then press enter
+
+* For tips and tricks type 'help' and press enter
+
 # CURRENT HIGH SCORE
 
 
-![Toms high score ](https://github.com/adamsl22/ruby-project-guidelines-nyc-clarke-web-010620/blob/andrewsbranch/images/dragon_tom.png)
+![Toms high score](https://github.com/adamsl22/ruby-project-guidelines-nyc-clarke-web-010620/blob/andrewsbranch/images/dragon_tom.png)
 
 
 
-
+_____________________
 
 
 # Module One Final Project Guidelines
