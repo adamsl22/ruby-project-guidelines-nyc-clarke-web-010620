@@ -7,9 +7,9 @@ require 'pry'
 # puts result["articles"][0]["title"]
 
 
-# b = Dragon.create(name: "Barius", wing_span: "12", color: "Blue", pattern: "Test", health: "Healthy", hunger: 16 )
-# c = Dragon.create(name: "Charius", wing_span: "12", color: "Blue", pattern: "Test", health: "Healthy", hunger: 16 )
-# a = Dragon.create(name: "Darius", wing_span: "12", color: "Blue", pattern: "Test", health: "Healthy", hunger: 16 )
+b = Dragon.create(name: "Barius", wing_span: "12", color: "Blue", pattern: "Test", health: "Healthy", hunger: 16 )
+c = Dragon.create(name: "Charius", wing_span: "12", color: "Blue", pattern: "Test", health: "Healthy", hunger: 16 )
+a = Dragon.create(name: "Darius", wing_span: "12", color: "Blue", pattern: "Test", health: "Healthy", hunger: 16 )
 # #v = Village.create(name: "Village 1", population: 30, knights: 15, slayers: 1)
 # test_raid13 = Raid.create(village_id: 1, dice_roll: 3)
 # rg = RaidPairing.create(dragon_id: 5, raid_id: 13)

@@ -15,6 +15,7 @@ type 'done' and press enter.
 
 # CURRENT HIGH SCORE
 
+Tom Humphrey: 39 turns
 
 ![Toms high score](https://github.com/adamsl22/ruby-project-guidelines-nyc-clarke-web-010620/blob/andrewsbranch/images/dragon_tom.png)
 

@@ -128,10 +128,10 @@ end
 def update_menu_items(new_items_array)
     
     if new_items_array == nil
-        @body = "You have no dragons available to raid." 
+        @body = "\nYou have no dragons available to raid.\n".red
     else
-        @body = "\nSelect your Dragons and then type 'done' to create your raid.\n "
-        @question_prompt = "Choose your Dragons."
+        @body = "\nSelect your Dragons:\n ".blue
+        @question_prompt = "[done] to create your raid [back] to go back"
         @menu_items.each_with_index do |item, index|
             menu_items[index] = ""
         end
