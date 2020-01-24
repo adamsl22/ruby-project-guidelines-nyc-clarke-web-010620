@@ -1,3 +1,13 @@
+# CURRENT HIGH SCORE
+
+
+![Toms high score ](https://github.com/adamsl22/ruby-project-guidelines-nyc-clarke-web-010620/blob/andrewsbranch/images/dragon_tom.png)
+
+
+
+
+
+
 # Module One Final Project Guidelines
 
 Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
