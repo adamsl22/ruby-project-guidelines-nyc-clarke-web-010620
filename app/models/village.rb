@@ -40,11 +40,13 @@ class Village < ActiveRecord::Base
     end
 
     def self.first_village
-        nomads = Village.find_by(name: "Nomads")
-        nomad_pop = nomads.population - 15
-        nomads.update(population: nomad_pop)
-        first_village = Village.create(name: "Primeton", population: 15, knights: 0, slayers: 0)
-        UI.soft_announce("The people have founded the village of Primeton.", "blue")
+        if Village.all.count == 1
+            nomads = Village.find_by(name: "Nomads")
+            nomad_pop = nomads.population - 15
+            nomads.update(population: nomad_pop)
+            first_village = Village.create(name: "Primeton", population: 15, knights: 0, slayers: 0)
+            UI.soft_announce("The people have founded the village of Primeton.", "blue")
+        end
     end
 
     def self.most_populous_village
