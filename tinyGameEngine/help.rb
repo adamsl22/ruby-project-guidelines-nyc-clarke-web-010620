@@ -5,7 +5,7 @@ HELP = "----------------------------------------------------------------
 ================================================================\n
 ---------------------------HELP MENU----------------------------\n
 ================================================================\n\n
-Thank you for playing Dragon Maker created by Adam and Andrew
+Thank you for playing Dragon Maker, created by Adam and Andrew
 with tools from the Tiny Game Engine. Tiny Game Engine was built
 to give ruby developers an easy way to build a menu system and
 game event system for your game!\n\n
