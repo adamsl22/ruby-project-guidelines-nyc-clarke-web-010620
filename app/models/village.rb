@@ -256,7 +256,7 @@ class Village < ActiveRecord::Base
                 attacking_village.update(knights: new_knights)
                 UI.announce("Your dragons killed #{dead_knights.round} attacking knights!", "green")
                 #Slayers
-                if attacking_slayers > 0
+                if attacking_slayers
                     slayer_hardiness = 6.25 + roll_difference
                     dead_slayers = attacking_slayers.to_f / slayer_hardiness
                     new_slayers = attacking_village.slayers - dead_slayers.round
